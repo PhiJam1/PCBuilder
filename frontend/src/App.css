@@ -1,0 +1,67 @@
+.bg-myRed{
+  background-color: crimson;
+}
+
+.content{
+  padding: 12px;
+  height: 100vh;
+}
+
+
+.coloring{
+  color: red;
+}
+
+
+
+.mainHome {
+  background-color: black;
+  height: 100vh;
+}
+.right-half {
+  width: 50%;
+  height: 100vh; /* 100% of the viewport height */
+  background-color: black; /* Background color, change as needed */
+  float: right;
+  padding: 20px;
+  color: white;
+}
+
+.bottom-half {
+  width: 50%;
+  height: 50%;
+  background-color: black;
+  float: left;
+  padding: 50px;
+  color: white;
+  border: 30px solid rgb(66, 0, 66); 
+  border-radius: 100px;
+}
+
+.homepage {
+  height: 100vh;
+  background-image: url('HomePageIm1.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+  background-size: cover; /* This property ensures that the image covers the entire div */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the background image */  
+}
+
+.hpLoginPrompt {
+  background-color: #333333;
+  float: left;
+  padding: 20px;
+  border: 30px solid #333333;
+  border-radius: 100px;
+  display: grid;
+  place-items: center;
+  color: white;
+  margin: 10px 20px;
+}
+.top-half {
+  width: 50%;
+  height: 50%;
+  float: left;
+  padding: 50px;
+  color: white;
+
+}
