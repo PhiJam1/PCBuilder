@@ -16,14 +16,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function App() {
   return (
-    <div className="mainHome">
-        <Router>
+    <div className="main-app">
+        <Router style={{backgroundColor: 'black'}}>
           <NavBar />
           <Routes>
-            <Route exact path="/" element={<HomePage/>}/>\
+            <Route exact path="/" element={<HomePage/>}/>
             <Route exact path="/About" element={<AboutPage/>}/>
             <Route exact path="/Login" element={<LoginPage/>}/>
-            <Route exact path="/Contact_Us" element={<ContactUsPage/>}/>
+            <Route exact path="/Contact_Us" element={<ContactUsPage/>} />
             <Route exact path="/Design_Studio" element={<PcBuilderPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
           </Routes>

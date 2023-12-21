@@ -8,7 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export const NavBar = () => {
     return (
-      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary" data-bs-theme="dark" sticky='top' style={{ height: '80px', fontSize: '20px', marginBottom: '20px'}}>
+      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary" data-bs-theme="dark" sticky='top' style={{ height: '80px', fontSize: '20px', marginBottom: '0px'}}>
           <Navbar.Brand href="/" style={{ fontSize: '40px'}}><img src={logo} width="50px" height="50px" />{' '} Shafaath</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

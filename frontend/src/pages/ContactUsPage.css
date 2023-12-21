@@ -1,0 +1,28 @@
+.left {
+    background-color: black;
+    height: 100vh;
+    float: right;
+    padding: 50px;
+    color: #8011ec;
+    width: 50%;
+}
+
+.right {
+    background: black;
+    width: 100%;
+    float: left;
+    height: 100vh;
+    background-image: url('./../Images/ContactUSIm.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 0px;
+}
+
+.line {
+    height: 4px; /* Adjust the value as needed */
+    background-color: #8011ec; /* Optional: Set a background color */
+    border: none; /* Remove the default border */
+    margin: 20px 0; /* Optional: Add margin for spacing */
+}
+

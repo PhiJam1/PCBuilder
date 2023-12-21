@@ -4,15 +4,15 @@ import './../pages/HomePage.css';
 export default function HomePageDescriptions() {
     return (
         <div>
-            <div className='bottom-right'> 
-                <h1> <Badge bg="secondary">Once Upon a Time...</Badge>Once Upon a Time... </h1>
+            <div className='top-btn-block'> 
+                <h1> Once Upon a Time...</h1>
                 <p>
                     When gamers, causal or committed, wanted the latest and greatest in personal computing technologies, 
                     they'd have the expensive source the parts themselves, research what works with what, and make guesses as to what
                     the best tradeoffs are to keep from breaking the whole piggy bank.
                 </p>
             </div>
-            <div className='bottom-right'> 
+            <div className='top-btn-block'> 
                 <h1> Well not anymore. </h1>
                 <p>
                     Here at shafaath, we've already done the sourcing, and research, and know all the best tradeoffs for your 
@@ -21,7 +21,7 @@ export default function HomePageDescriptions() {
                     deliver the highest quality and guarantee any defective service will be fully refunded and fixed (right yu?). 
                 </p>
             </div>
-            <div className='bottom-right'>
+            <div className='top-btn-block'>
                 <h1> How Does This Work </h1>
                 <p>
                     First, you can design your dream PC in our design studio (make this a button). At each stage, select the part you
