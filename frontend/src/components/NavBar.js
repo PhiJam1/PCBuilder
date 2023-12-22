@@ -12,11 +12,10 @@ export const NavBar = () => {
           <Navbar.Brand href="/" style={{ fontSize: '40px'}}><img src={logo} width="50px" height="50px" />{' '} Shafaath</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ms-auto" style={{padding: '20px'}}>
               <Nav.Link href="/Design_Studio">Design Studio</Nav.Link>
               <Nav.Link href="/Order_Status">Order Status</Nav.Link>
               <Nav.Link href="/Contact_Us">Contact Us </Nav.Link>
-              {true ? <EnableDropDown /> : <LoginBTN/>};
             </Nav>
           </Navbar.Collapse>
       </Navbar>
