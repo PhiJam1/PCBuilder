@@ -5,11 +5,13 @@ import "./PcBuilderPage.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
+import { PartsTable } from '../components/PartsTable';
+
 export const BuildPage = () => {
     const { orderNum } = useParams();
     return ( // this stuff is JSX
         <div className="full">
-            <h1>Build page</h1>
+            <PartsTable />
         </div>
     );
 }

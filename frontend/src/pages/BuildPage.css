@@ -1,0 +1,24 @@
+
+
+/* YourComponent.css */
+
+/* Change the background color of the entire ListGroup */
+
+.list-group-mine .list-group-item {
+    color: white;
+    background-color: #333333;
+    border-top: 1px solid #333333;
+    border-left-color: #333333;
+    border-right-color: #333333;
+}
+  
+.list-group-mine .list-group-item:hover {
+    background-color: #8011ec;
+}
+.list-group-mine .list-group-item.active {
+    background-color: #8011ec;
+}
+
+.hg {
+    background-color: #00ff00;
+}

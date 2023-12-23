@@ -13,7 +13,7 @@ export const PcBuilderPage = () => {
         navigate(path);
     }
     return ( // this stuff is JSX
-        <div className="full">
+        <div className="full" >
             {/* <h1> PC Builder Pages </h1> */}
             <h1>Choose a template to start with</h1>
             <TemplateBuilds />
