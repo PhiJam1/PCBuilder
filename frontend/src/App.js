@@ -24,7 +24,7 @@ function App() {
             <Route exact path="/About" element={<AboutPage/>}/>
             <Route exact path="/Contact_Us" element={<ContactUsPage/>} />
             <Route exact path="/Design_Studio" element={<PcBuilderPage/>}/>
-            <Route path="/Design_Studio/:orderNum" element={<BuildPage />} />
+            <Route path="/Design_Studio/:buildNum" element={<BuildPage />} />
             <Route path="*" element={<NotFoundPage/>}/>
           </Routes>
         </Router>

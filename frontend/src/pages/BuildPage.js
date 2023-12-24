@@ -8,10 +8,10 @@ import { useParams } from 'react-router-dom';
 import { PartsTable } from '../components/PartsTable';
 
 export const BuildPage = () => {
-    const { orderNum } = useParams();
+    const { buildNum } = useParams();
     return ( // this stuff is JSX
         <div className="full">
-            <PartsTable />
+            <PartsTable buildNum={buildNum}/>
         </div>
     );
 }
