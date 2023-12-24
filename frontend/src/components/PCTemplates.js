@@ -145,7 +145,7 @@ const builds = [
 export default function TemplateBuilds() {
     let navigate = useNavigate(); 
     const routeChange = () =>{ 
-        let path = `/Order_Status/`; 
+        let path = `/Design_Studio/33/`; 
         navigate(path);
     }
     return (
