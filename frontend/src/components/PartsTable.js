@@ -10,6 +10,99 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import ContactUSIm from './../Images/ContactUSIm.jpg';
 import Badge from 'react-bootstrap/Badge';
+import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+
+const cases = [
+    {
+        name: "case 1",
+        description: "This is a good product"
+    },
+    {
+        name: "case 2",
+        description: "This is a good product"
+    },
+    {
+        name: "case 3",
+        description: "This is a good product"
+    }
+]
+
+const CPUs = [
+    {
+        name: "cpu 1",
+        description: "This is a good product"
+    },
+    {
+        name: "cpu 1",
+        description: "This is a good product"
+    },
+    {
+        name: "cpu 1",
+        description: "This is a good product"
+    }
+]
+
+const CPUCoolers = [
+    {
+        name: "CPUCoolers 1",
+        description: "This is a good product"
+    },
+    {
+        name: "CPUCoolers 2",
+        description: "This is a good product"
+    },
+    {
+        name: "CPUCoolers 3",
+        description: "This is a good product"
+    }
+]
+
+const motherboards = [
+    {
+        name: "Motherboard 1",
+        description: "This is a good product"
+    },
+    {
+        name: "Motherboard 2",
+        description: "This is a good product"
+    },
+    {
+        name: "motherboard 3",
+        description: "This is a good product"
+    }
+]
+
+const memorys = [
+    {
+        name: "mem 1",
+        description: "This is a good product"
+    },
+    {
+        name: "mwm 2",
+        description: "This is a good product"
+    },
+    {
+        name: "mem 3",
+        description: "This is a good product"
+    }
+]
+
+
+const storages = [
+    {
+        name: "storage 1",
+        description: "This is a good product"
+    },
+    {
+        name: "storage 2",
+        description: "This is a good product"
+    },
+    {
+        name: "storage 3",
+        description: "This is a good product"
+    }
+]
+
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
@@ -62,6 +155,7 @@ export const PartsTable = (props) => {
                         </ListGroup>
                     </Col>
                     <Col sm={8}>
+                        <div>
                         <Tab.Content>
                             <Tab.Pane eventKey="#case">{GetCases(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#cpu">{GetCPU(buildNum)}</Tab.Pane>
@@ -76,6 +170,7 @@ export const PartsTable = (props) => {
                             <Tab.Pane eventKey="#other">other Selection</Tab.Pane>
 
                         </Tab.Content>
+                        </div>
                     </Col>
                 </Row>
             </Tab.Container>
@@ -84,8 +179,7 @@ export const PartsTable = (props) => {
 }
 
 
-
-function MakeCard({title, description}) {
+function MakeCard({title, description, selected, setCurr}) {
     return (
         <Card >
         <Card.Body style={{
@@ -96,32 +190,43 @@ function MakeCard({title, description}) {
             border: "white solid 1px"
             }}>
             <div style={{overflow: 'auto', padding: '5px'}}>
-          <Card.Title>{title}</Card.Title>
+            <Card.Title>
+                {title}
+                {(selected ? <Badge bg="info" style={{marginLeft: '10px'}}>Current</Badge> : "")} 
+            </Card.Title>
           <Card.Text>
             {description}
           </Card.Text>
           </div>
           <Button 
-            variant="primary"
+            variant={"primary " + (selected ? "disabled" : "active")}
             size="lg"
             style={{padding: '10px 20px', fontSize: '1.5rem', background: '#8011ec', borderColor: '#8011ec', margin: '0px'}}
-            onClick={console.log("btn clicked")}>Add To Build</Button>
+            onClick={console.log("btn clicked " + title)}>Add To Build</Button>
         </Card.Body>
       </Card>
     );
 }
 
 
+function GetCurrentCase(buildNum) {
+    const curr_case = "case 2"; // get this front backend using buildNum
+    
+    return(curr_case)
+}
+
+function setCurrentCase(buildNum, title) {
+    
+}
+
 function GetCases(buildNum) {
     return (
         // set the width of this div to some percent. then set the border box thing
         // maybe also change the top margin to be 0. 
         <div className='selectBox'>
-            < MakeCard title="Case 1" description="This is a good product" />
-            < MakeCard title="Case 2" description="This is gross" />
-            < MakeCard title="Case 3" description="Good performance for cheap price" />
-            < MakeCard title="Case 4" description="Personal Favorite" />
-            < MakeCard title="Case 5" description="black" />
+            {cases.map(item => (
+                < MakeCard title={item.name} description={item.description} selected={item.name === GetCurrentCase(buildNum)} setCurr={GetCurrentCase(buildNum)}/>
+            ))}
         </div>
     );
 }

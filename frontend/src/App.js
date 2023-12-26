@@ -11,6 +11,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { PcBuilderPage } from "./pages/PcBuilderPage";
 import { NavBar } from './components/NavBar';
 import { BuildPage } from './pages/BuildPage.js';
+import { OrderStatus } from './pages/OrderStatus.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -25,6 +26,8 @@ function App() {
             <Route exact path="/Contact_Us" element={<ContactUsPage/>} />
             <Route exact path="/Design_Studio" element={<PcBuilderPage/>}/>
             <Route path="/Design_Studio/:buildNum" element={<BuildPage />} />
+            <Route path="/Order_Status/" element={<OrderStatus />} />
+            <Route path="/Order_Status/:buildNum" element={<OrderStatus />} />
             <Route path="*" element={<NotFoundPage/>}/>
           </Routes>
         </Router>
