@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useNavigate } from "react-router-dom";
@@ -12,20 +12,9 @@ import ContactUSIm from './../Images/ContactUSIm.jpg';
 import Badge from 'react-bootstrap/Badge';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 
-const cases = [
-    {
-        name: "case 1",
-        description: "This is a good product"
-    },
-    {
-        name: "case 2",
-        description: "This is a good product"
-    },
-    {
-        name: "case 3",
-        description: "This is a good product"
-    }
-]
+// these are lists of parts 'sent' from backend
+
+
 
 const CPUs = [
     {
@@ -87,7 +76,6 @@ const memorys = [
     }
 ]
 
-
 const storages = [
     {
         name: "storage 1",
@@ -106,6 +94,35 @@ const storages = [
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
+        
+    // get current case from the backend
+    const cases = [
+        {
+            name: "case 1",
+            description: "This is a good product"
+        },
+        {
+            name: "case 2",
+            description: "This is a good product"
+        },
+        {
+            name: "case 3",
+            description: "This is a good product"
+        }
+    ]
+
+    // set up react useState hook for current case. Set it with data from the backend
+    const [currCase, setCurrCase] = useState();
+
+    // onClick function to update current case
+    function updateCurr(title) {
+        //todo: make a backend request to update this as well. 
+        setCurrCase(title);
+    }
+
+
+
+
 
     return ( // this stuff is JSX
         <div className="list-group list-group-mine">
@@ -157,8 +174,14 @@ export const PartsTable = (props) => {
                     <Col sm={8}>
                         <div>
                         <Tab.Content>
-                            <Tab.Pane eventKey="#case">{GetCases(buildNum)}</Tab.Pane>
-                            <Tab.Pane eventKey="#cpu">{GetCPU(buildNum)}</Tab.Pane>
+                            <Tab.Pane eventKey="#case">
+                                <div className='selectBox'>
+                                    {cases.map(item => (
+                                    < MakeCard title={item.name} description={item.description} current={item.name === currCase} setter={updateCurr} />
+                                    ))}
+                                </div>
+                            </Tab.Pane>
+                            {/* <Tab.Pane eventKey="#cpu">{GetCPU(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#cpu_cooler">{GetCPUCooler(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#motherboard">{GetMotherboard(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#memory">{GetMemory(buildNum)}</Tab.Pane>
@@ -167,7 +190,7 @@ export const PartsTable = (props) => {
                             <Tab.Pane eventKey="#power_supply">{GetPowerSupply(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#operating_system">{GetOperatingSystem(buildNum)}</Tab.Pane>
                             <Tab.Pane eventKey="#monitor">{GetMonitor(buildNum)}</Tab.Pane>
-                            <Tab.Pane eventKey="#other">other Selection</Tab.Pane>
+                            <Tab.Pane eventKey="#other">other Selection</Tab.Pane> */}
 
                         </Tab.Content>
                         </div>
@@ -179,7 +202,7 @@ export const PartsTable = (props) => {
 }
 
 
-function MakeCard({title, description, selected, setCurr}) {
+function MakeCard({title, description, current, setter}) {
     return (
         <Card >
         <Card.Body style={{
@@ -192,17 +215,17 @@ function MakeCard({title, description, selected, setCurr}) {
             <div style={{overflow: 'auto', padding: '5px'}}>
             <Card.Title>
                 {title}
-                {(selected ? <Badge bg="info" style={{marginLeft: '10px'}}>Current</Badge> : "")} 
+                {(current ? <Badge bg="info" style={{marginLeft: '10px'}}>Current</Badge> : "")} 
             </Card.Title>
           <Card.Text>
             {description}
           </Card.Text>
           </div>
           <Button 
-            variant={"primary " + (selected ? "disabled" : "active")}
+            variant={"primary " + (current ? "disabled" : "active")}
             size="lg"
             style={{padding: '10px 20px', fontSize: '1.5rem', background: '#8011ec', borderColor: '#8011ec', margin: '0px'}}
-            onClick={console.log("btn clicked " + title)}>Add To Build</Button>
+            onClick={() => setter(title)}>Add To Build</Button>
         </Card.Body>
       </Card>
     );
@@ -216,7 +239,7 @@ function GetCurrentCase(buildNum) {
 }
 
 function setCurrentCase(buildNum, title) {
-    
+
 }
 
 function GetCases(buildNum) {
@@ -224,9 +247,9 @@ function GetCases(buildNum) {
         // set the width of this div to some percent. then set the border box thing
         // maybe also change the top margin to be 0. 
         <div className='selectBox'>
-            {cases.map(item => (
+            {/* {cases.map(item => (
                 < MakeCard title={item.name} description={item.description} selected={item.name === GetCurrentCase(buildNum)} setCurr={GetCurrentCase(buildNum)}/>
-            ))}
+            ))} */}
         </div>
     );
 }
