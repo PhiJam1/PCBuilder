@@ -1,7 +1,6 @@
 .card {
     margin: 20px;
-    width: 96.5%;
-    
+    width: 95%;
 }
 
 
@@ -35,6 +34,6 @@
     border-right-color: #8011ec;
 }
 
-.hg {
-    background-color: #00ff00;
+.top-right {
+    float: right;
 }
