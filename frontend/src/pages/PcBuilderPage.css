@@ -18,3 +18,8 @@
     padding: 50px;
     height: auto;
 }
+
+
+input::placeholder {
+    color: #cccccc !important;
+}

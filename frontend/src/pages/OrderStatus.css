@@ -1,0 +1,17 @@
+.title {
+    color: white;
+    padding: 20px;
+    margin: 20px;
+}
+
+.build-components {
+    
+    color: white;
+    background-color: #333333;
+    padding: 20px;
+    border: 10px solid #333333;
+    border-radius: 100px;
+    place-items: left;
+    margin: 40px;
+    
+}
