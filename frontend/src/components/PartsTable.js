@@ -11,6 +11,7 @@ import Tab from 'react-bootstrap/Tab';
 import ContactUSIm from './../Images/ContactUSIm.jpg';
 import Badge from 'react-bootstrap/Badge';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+import Form from 'react-bootstrap/Form';
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
@@ -235,9 +236,10 @@ export const PartsTable = (props) => {
     }
 
 
+
     return ( // this stuff is JSX
         <div className="list-group list-group-mine">
-
+            <UpdateExplanation />
             <Tab.Container id="list-group-tabs-example" defaultActiveKey="#case"  >
                 <Row >
                     <Col sm={4} >
@@ -350,7 +352,9 @@ export const PartsTable = (props) => {
                                     ))}
                                 </div>
                             </Tab.Pane>
-                            <Tab.Pane eventKey="#other">other Selection</Tab.Pane>
+                            <Tab.Pane eventKey="#other">
+                                < OtherAdditions />
+                            </Tab.Pane>
                         </Tab.Content>
                         </div>
                     </Col>
@@ -361,7 +365,59 @@ export const PartsTable = (props) => {
 }
 
 
+function UpdateExplanation() {
+    var type = window.location.hash.substring(1);
+
+    let partName = "";
+    let partDescription = "";
+    if (type === "case" || type === "") {
+        // all of these should be backend calls, unless yu wants to just hard code it which, now that I think of it, may be sufficient.
+        partName = "Case";
+        partDescription = "Case description goes here.";
+    } else if (type == "cpu") {
+        partName = "CPU";
+        partDescription = "CPU description goes here.";
+    } else if (type == "cpu_cooler") {
+        partName = "CPU Cooler";
+        partDescription = "CPU cooler description goes here.";
+    } else if (type == "motherboard") {
+        partName = "Motherboard";
+        partDescription = "Motherboard description goes here.";
+    } else if (type == "memory") {
+        partName = "Memory";
+        partDescription = "Memory description goes here.";
+    } else if (type == "storage") {
+        partName = "Storage";
+        partDescription = "Storage description goes here.";
+    } else if (type == "gpu") {
+        partName = "GPU";
+        partDescription = "GPU description goes here.";
+    } else if (type == "power_supply") {
+        partName = "Power Supply";
+        partDescription = "Power Supply description goes here.";
+    } else if (type == "operating_system") {
+        partName = "Operating System";
+        partDescription = "Operating System description goes here.";
+    } else if (type == "monitor") {
+        partName = "Monitor";
+        partDescription = "Monitor description goes here.";
+    } else if (type == "other") {
+        partName = "Add your own parts!";
+        partDescription = "Choose wisely.";
+    }
+    
+    return (
+        <div>
+            <h1>{partName}</h1>
+            <p>{partDescription}</p>
+        </div>
+    );
+}
+
+
+
 function MakeCard({title, description, current, setter}) {
+    
     return (
         <Card >
         <Card.Body style={{
@@ -388,4 +444,28 @@ function MakeCard({title, description, current, setter}) {
         </Card.Body>
       </Card>
     );
+}
+
+
+function OtherAdditions() {
+    return (
+        <div>
+            <Form>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Estimated Cost</Form.Label>
+                <Form.Control type="email" placeholder="name@example.com" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Example textarea</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+                </Form.Group>
+            </Form>
+            <Button 
+                variant="primary"
+                size="lg"
+                style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '0px'}}
+                >Save
+            </Button>
+        </div>
+    )
 }

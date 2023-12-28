@@ -46,7 +46,7 @@ export default function FinalOrderStatus() {
             <Col>
                 <div className="build-components">
                     <h1>Current Build Info</h1>
-                    <h2><Badge bg="primary" size="lg">Cost: $200</ Badge> </h2>
+                    <h2><Badge bg="primary" size="lg">Estimated Cost: $200</ Badge> </h2>
                     <h4>Template: School</h4>
                     <ListGroup style={{ backgroundColor: "#333333", color: 'red'}}>
                         <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Case: case 1</ListGroup.Item>
@@ -58,7 +58,7 @@ export default function FinalOrderStatus() {
                             variant="primary"
                             size="lg"
                             style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
-                            onClick={() => routeChange()}>Customize</Button>
+                            onClick={() => routeChange()}>Edit</Button>
                 </div>
             </Col>
             <Col>
