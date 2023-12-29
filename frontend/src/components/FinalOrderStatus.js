@@ -86,7 +86,7 @@ export default function FinalOrderStatus() {
                             id="phone-final"
                         />
                         </InputGroup>
-                        {invalidForm ? <Badge pill="true" bg="danger" style={{fontSize: '100%', margin: '10px 0px'}}>No Record Found! Try again, or contact us for more help. </Badge> : <></>} 
+                        {invalidForm ? <Badge pill="true" bg="danger" style={{fontSize: '100%', marginBottom: '10px'}}> Please fill out both fields.</Badge> : <></>} 
                         <h6>We only use your info to set up a quick consulting session.</h6>
                         
                         <Button 

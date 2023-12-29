@@ -12,6 +12,7 @@ import ContactUSIm from './../Images/ContactUSIm.jpg';
 import Badge from 'react-bootstrap/Badge';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
@@ -448,24 +449,66 @@ function MakeCard({title, description, current, setter}) {
 
 
 function OtherAdditions() {
+    const [estimatedCost, setEstimatedCost] = useState(33);
+    const [extraParts, setExtraParts] = useState();
+    const [showSaved, setShowSaved] = useState(false);
+    
+    const costChange = (event) => {
+        setEstimatedCost(event.target.value);
+        setShowSaved(false);
+    };
+
+    const extraPartsChange = (event) => {
+        setShowSaved(false);
+    }
+
+    function saveBTN() {
+        setEstimatedCost(document.getElementById("extraEstimatedCost").value);
+        setExtraParts(document.getElementById("extraDescription").value);
+        console.log(extraParts)
+        setShowSaved(true);
+    }
+    
     return (
         <div>
+            <Form.Label>Total Estimated Cost For all Additions</Form.Label>
+            <InputGroup className="mb-3">
+                
+                <InputGroup.Text style={{background: '#333333', color: 'white'}} >$</InputGroup.Text>
+                
+                <Form.Control
+                    aria-label="Amount (to the nearest dollar)" 
+                    type="number"
+                    placeholder='$$$'
+                    style={{background: '#333333', color: 'white'}} 
+                    value={estimatedCost} 
+                    onChange={costChange}
+                    id="extraEstimatedCost" 
+                />
+            </InputGroup>
             <Form>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Estimated Cost</Form.Label>
-                <Form.Control type="email" placeholder="name@example.com" />
-                </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Example textarea</Form.Label>
-                <Form.Control as="textarea" rows={3} />
+                    <Form.Label>Extra Parts and Requests</Form.Label>
+                    <Form.Control 
+                    size="lg" 
+                    as="textarea"
+                    rows={3}
+                    style={{background: '#333333', color: 'white', overflow: 'auto'}}
+                    id="extraDescription"
+                    onChange={extraPartsChange}>
+                        {extraParts}
+                    </Form.Control>
                 </Form.Group>
             </Form>
+            {showSaved && <Badge pill="true" bg="primary" style={{fontSize: '100%', marginBottom: '20px'}}>Saved</Badge>} <br />
             <Button 
                 variant="primary"
                 size="lg"
                 style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '0px'}}
-                >Save
+                onClick={() => saveBTN()}>
+                    Save
             </Button>
+            
         </div>
     )
 }

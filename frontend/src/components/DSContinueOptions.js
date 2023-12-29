@@ -14,6 +14,12 @@ import { useState } from "react";
 export default function ContinueOptions() {
     let navigate = useNavigate(); 
     function routeChange(buildNumber) { 
+      if (buildNumber == "") {
+        // generate a new build number
+        let num = 44;
+        navigate("/Design_Studio/" + num);
+        return;
+      }
         let path = `/Order_Status/` + buildNumber; 
         navigate(path);
     }
