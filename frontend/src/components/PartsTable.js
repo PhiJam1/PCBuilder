@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useNavigate } from "react-router-dom";
@@ -13,72 +13,57 @@ import Badge from 'react-bootstrap/Badge';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Axios from 'axios';
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
-        
-    // from backend
-    const cases = [
-        {
-            name: "case 1",
-            description: "This is a good product"
-        },
-        {
-            name: "case 2",
-            description: "This is a good product"
-        },
-        {
-            name: "case 3",
-            description: "This is a good product"
+    
+    // function that will get catalog information from the backend
+    const fetchData = async (endpoint, catalogSetter) => {
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          catalogSetter(data);
+          console.log(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
         }
-    ]
+    };
 
+    /* CASES */
+    const [cases, setCases] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_cases/", setCases);
+    }, []);
+    
     // set up react useState hook for current case. Set it with data from the backend
     const [currCase, setCurrCase] = useState();
-    // onClick function to update current case
     function updateCurrCase(title) {
         //todo: make a backend request to update this as well. 
         setCurrCase(title);
     }
 
     /* CPUs */
-    // from backend
-    const CPUs = [
-        {
-            name: "cpu 1",
-            description: "This is a good product"
-        },
-        {
-            name: "cpu 2",
-            description: "This is a good product"
-        },
-        {
-            name: "cpu 3",
-            description: "This is a good product"
-        }
-    ]
+    const [cpus, setCpus] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_cpus/", setCpus);
+    }, []);
+
     const [currCPU, setCurrCPU] = useState();
     function updateCurrCPU(title) {
         //todo: make a backend request to update this as well.
         setCurrCPU(title);
     }
     
+
     /* CPU Coolers */
-    const CPUCoolers = [
-        {
-            name: "CPUCoolers 1",
-            description: "This is a good product"
-        },
-        {
-            name: "CPUCoolers 2",
-            description: "This is a good product"
-        },
-        {
-            name: "CPUCoolers 3",
-            description: "This is a good product"
-        }
-    ]
-    
+    const [CPUCoolers, setCPUCoolers] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_cpus/", setCPUCoolers);
+    }, []);
     const [currCPUCooler, setCurrCPUCooler] = useState();
     
     function updateCurrCPUCooler(title) {
@@ -86,20 +71,11 @@ export const PartsTable = (props) => {
     }
 
 
-    const motherboards = [
-        {
-            name: "Motherboard 1",
-            description: "This is a good product"
-        },
-        {
-            name: "Motherboard 2",
-            description: "This is a good product"
-        },
-        {
-            name: "motherboard 3",
-            description: "This is a good product"
-        }
-    ]
+    /* MOTHERBOARDS */
+    const [motherboards, setMotherboards] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_motherboards/", setMotherboards);
+    }, []);
     
     const [currMotherboard, setCurrMotherboard] = useState();
     
@@ -107,20 +83,12 @@ export const PartsTable = (props) => {
         setCurrMotherboard(title);
     }
 
-    const memorys = [
-        {
-            name: "mem 1",
-            description: "This is a good product"
-        },
-        {
-            name: "mwm 2",
-            description: "This is a good product"
-        },
-        {
-            name: "mem 3",
-            description: "This is a good product"
-        }
-    ]
+
+    /* MEMORIES */
+    const [memories , setMemories] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_memories/", setMemories);
+    }, []);
 
     const [currMemory, setCurrMemory] = useState();
 
@@ -128,21 +96,11 @@ export const PartsTable = (props) => {
         setCurrMemory(title);
     }
 
-    const storages = [
-        {
-            name: "storage 1",
-            description: "This is a good product"
-        },
-        {
-            name: "storage 2",
-            description: "This is a good product"
-        },
-        {
-            name: "storage 3",
-            description: "This is a good product"
-        }
-    ]
-
+    /*  STORAGES */
+    const [storages, setStorages] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_storage/", setStorages);
+    }, []);
     const [currStorage, setCurrStorage] = useState();
 
     function updateCurrStorage(title) {
@@ -150,92 +108,37 @@ export const PartsTable = (props) => {
     }
 
 
-
-    const GPUs = [
-        {
-            name: "GPU 1",
-            description: "This is a good product"
-        },
-        {
-            name: "GPU 2",
-            description: "This is a good product"
-        },
-        {
-            name: "GPU 3",
-            description: "This is a good product"
-        }
-    ]
-
+    /* GPU */
+    const [GPUs, setGPUs] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_gpus/", setGPUs);
+    }, []);
+    
     const [currGPU, setCurrGPU] = useState();
-
     function updateCurrGPU(title) {
         setCurrGPU(title);
     }
 
-    const PowerSupply = [
-        {
-            name: "Power Supply 1",
-            description: "This is a good product"
-        },
-        {
-            name: "Power Supply 2",
-            description: "This is a good product"
-        },
-        {
-            name: "Power Supply 3",
-            description: "This is a good product"
-        }
-    ]
-
+    const [powerSupply, setPowerSupply] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_power_supply/", setPowerSupply);
+    }, []);
     const [currPowerSupply, setCurrPowerSupply] = useState();
 
     function updateCurrPowerSupply(title) {
         setCurrPowerSupply(title);
     }
 
-    const OperatingSystem = [
-        {
-            name: "Windows",
-            description: "Expensive but essential for gaming. Recommended for most people."
-        },
-        {
-            name: "Ubuntu",
-            description: "Free all purpose OS. Most common linux distro."
-        },
-        {
-            name: "Kali",
-            description: "Really nice cybersecurity focused OS."
-        }
-    ]
     
+    const [operatingSystem, setOperatingSystems] = useState([]);
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_operating_systems/", setOperatingSystems);
+    }, []);
     const [currOperatingSystem, setCurrOperatingSystem] = useState();
 
     function updateCurrOperatingSystem(title) {
         setCurrOperatingSystem(title);
     }
-    
-
-    const Monitor = [
-        {
-            name: "Monitor 1",
-            description: "Expensive but essential for gaming. Recommended for most people."
-        },
-        {
-            name: "Monitor 2",
-            description: "Free all purpose OS. Most common linux distro."
-        },
-        {
-            name: "Monitor 3",
-            description: "Really nice cybersecurity focused OS."
-        }
-    ]
-
-    const [currMonitor, setCurrMonitor] = useState();
-
-    function updateCurrMonitor(title) {
-        setCurrMonitor(title);
-    }
-
 
 
     return ( // this stuff is JSX
@@ -243,7 +146,7 @@ export const PartsTable = (props) => {
             <UpdateExplanation />
             <Tab.Container id="list-group-tabs-example" defaultActiveKey="#case"  >
                 <Row >
-                    <Col sm={4} >
+                    <Col sm={3} >
                         <ListGroup >
                             <ListGroup.Item action href="#case">
                                 Case | {currCase ? currCase :  <Badge bg="info">Unselected</Badge>}
@@ -272,9 +175,6 @@ export const PartsTable = (props) => {
                             <ListGroup.Item action href="#operating_system">
                                 Operating System | {currOperatingSystem ? currOperatingSystem :  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
-                            <ListGroup.Item action href="#monitor">
-                                Monitor | {currMonitor ? currMonitor :  <Badge bg="info">Unselected</Badge>}
-                            </ListGroup.Item>
                             <ListGroup.Item action href="#other">
                                 Other
                             </ListGroup.Item>
@@ -292,7 +192,7 @@ export const PartsTable = (props) => {
                             </Tab.Pane>
                             <Tab.Pane eventKey="#cpu">
                                 <div className='selectBox'>
-                                    {CPUs.map(item => (
+                                    {cpus.map(item => (
                                         < MakeCard title={item.name} description={item.description} current={item.name === currCPU} setter={updateCurrCPU} />
                                     ))}
                                 </div>
@@ -313,7 +213,7 @@ export const PartsTable = (props) => {
                             </Tab.Pane>
                             <Tab.Pane eventKey="#memory">
                                 <div className='selectBox'>
-                                    {memorys.map(item => (
+                                    {memories.map(item => (
                                         < MakeCard title={item.name} description={item.description} current={item.name === currMemory} setter={updateCurrMemory} />
                                     ))}
                                 </div>
@@ -334,22 +234,15 @@ export const PartsTable = (props) => {
                             </Tab.Pane>
                             <Tab.Pane eventKey="#power_supply">
                                 <div className='selectBox'>
-                                    {PowerSupply.map(item => (
+                                    {powerSupply.map(item => (
                                         < MakeCard title={item.name} description={item.description} current={item.name === currPowerSupply} setter={updateCurrPowerSupply} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#operating_system">
                                 <div className='selectBox'>
-                                    {OperatingSystem.map(item => (
+                                    {operatingSystem.map(item => (
                                         < MakeCard title={item.name} description={item.description} current={item.name === currOperatingSystem} setter={updateCurrOperatingSystem} />
-                                    ))}
-                                </div>
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="#monitor">
-                                <div className='selectBox'>
-                                    {Monitor.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currMonitor} setter={updateCurrMonitor} />
                                     ))}
                                 </div>
                             </Tab.Pane>
@@ -375,34 +268,31 @@ function UpdateExplanation() {
         // all of these should be backend calls, unless yu wants to just hard code it which, now that I think of it, may be sufficient.
         partName = "Case";
         partDescription = "Case description goes here.";
-    } else if (type == "cpu") {
+    } else if (type === "cpu") {
         partName = "CPU";
         partDescription = "CPU description goes here.";
-    } else if (type == "cpu_cooler") {
+    } else if (type === "cpu_cooler") {
         partName = "CPU Cooler";
         partDescription = "CPU cooler description goes here.";
-    } else if (type == "motherboard") {
+    } else if (type === "motherboard") {
         partName = "Motherboard";
         partDescription = "Motherboard description goes here.";
-    } else if (type == "memory") {
+    } else if (type === "memory") {
         partName = "Memory";
         partDescription = "Memory description goes here.";
-    } else if (type == "storage") {
+    } else if (type === "storage") {
         partName = "Storage";
         partDescription = "Storage description goes here.";
-    } else if (type == "gpu") {
+    } else if (type === "gpu") {
         partName = "GPU";
         partDescription = "GPU description goes here.";
-    } else if (type == "power_supply") {
+    } else if (type === "power_supply") {
         partName = "Power Supply";
         partDescription = "Power Supply description goes here.";
-    } else if (type == "operating_system") {
+    } else if (type === "operating_system") {
         partName = "Operating System";
         partDescription = "Operating System description goes here.";
-    } else if (type == "monitor") {
-        partName = "Monitor";
-        partDescription = "Monitor description goes here.";
-    } else if (type == "other") {
+    } else if (type === "other") {
         partName = "Add your own parts!";
         partDescription = "Choose wisely.";
     }

@@ -62,3 +62,9 @@ def get_operating_systems(request):
     operating_systems = Part.objects.filter(type="OPERATING_SYSTEM")
     serializer = PartSerializer(operating_systems, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_memories(request):
+    memories = Part.objects.filter(type="MEMORY")
+    serializer = PartSerializer(memories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
