@@ -186,63 +186,63 @@ export const PartsTable = (props) => {
                             <Tab.Pane eventKey="#case">
                                 <div className='selectBox'>
                                     {cases.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currCase} setter={updateCurrCase} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currCase} setter={updateCurrCase} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#cpu">
                                 <div className='selectBox'>
                                     {cpus.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currCPU} setter={updateCurrCPU} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currCPU} setter={updateCurrCPU} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#cpu_cooler">
                                 <div className='selectBox'>
                                     {CPUCoolers.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currCPUCooler} setter={updateCurrCPUCooler} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currCPUCooler} setter={updateCurrCPUCooler} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#motherboard">
                                 <div className='selectBox'>
                                     {motherboards.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currMotherboard} setter={updateCurrMotherboard} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currMotherboard} setter={updateCurrMotherboard} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#memory">
                                 <div className='selectBox'>
                                     {memories.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currMemory} setter={updateCurrMemory} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currMemory} setter={updateCurrMemory} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#storage">
                                 <div className='selectBox'>
                                     {storages.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currStorage} setter={updateCurrStorage} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currStorage} setter={updateCurrStorage} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#gpu">
                                 <div className='selectBox'>
                                     {GPUs.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currGPU} setter={updateCurrGPU} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currGPU} setter={updateCurrGPU} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#power_supply">
                                 <div className='selectBox'>
                                     {powerSupply.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currPowerSupply} setter={updateCurrPowerSupply} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currPowerSupply} setter={updateCurrPowerSupply} />
                                     ))}
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#operating_system">
                                 <div className='selectBox'>
                                     {operatingSystem.map(item => (
-                                        < MakeCard title={item.name} description={item.description} current={item.name === currOperatingSystem} setter={updateCurrOperatingSystem} />
+                                        < MakeCard title={item.name} cost={item.cost} description={item.description} current={item.name === currOperatingSystem} setter={updateCurrOperatingSystem} />
                                     ))}
                                 </div>
                             </Tab.Pane>
@@ -307,7 +307,7 @@ function UpdateExplanation() {
 
 
 
-function MakeCard({title, description, current, setter}) {
+function MakeCard({title, cost, description, current, setter}) {
     
     return (
         <Card >
@@ -322,6 +322,7 @@ function MakeCard({title, description, current, setter}) {
             <Card.Title>
                 {title}
                 {(current ? <Badge bg="info" style={{marginLeft: '10px'}}>Current</Badge> : "")} 
+                <h5>${cost}</h5>
             </Card.Title>
           <Card.Text>
             {description}
@@ -339,7 +340,7 @@ function MakeCard({title, description, current, setter}) {
 
 
 function OtherAdditions() {
-    const [estimatedCost, setEstimatedCost] = useState(33);
+    const [estimatedCost, setEstimatedCost] = useState(0);
     const [extraParts, setExtraParts] = useState();
     const [showSaved, setShowSaved] = useState(false);
     
