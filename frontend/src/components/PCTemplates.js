@@ -1,193 +1,90 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import './../pages/PcBuilderPage.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// this should be something we fetch from the backend
-const builds = [
-    {
-        name: "Workstation heavy study",
-        image: "./../Images/HomePageIm1.jpg",
-        cost: 2000.10,
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "black"
-        ],
-        parts_list: [
-            "case 1",
-            "gpu 1",
-            "cpu 1",
-            "Intel 1"
-        ],
-        finished: true,
-    },
-    {
-        name: "Gaming",
-        image: "./../Images/HomePageIm1.jpg",
-        cost: 3000.00,
-        pros: [
-            "Colorful",
-            "Small"
-        ],
-        cons: [
-            "Expensive"
-        ],
-        parts_list: [
-            "case 2",
-            "gpu 2",
-            "cpu 2",
-            "Intel 2"
-        ],
-        finished: true,
-    },
-    {
-        name: "School",
-        cost: 1000.00,
-        image: "./../Images/HomePageIm1.jpg",
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "Slow"
-        ],
-        parts_list: [
-            "case 3",
-            "none",
-            "cpu 3",
-            "Intel 3"
-        ],
-        finished: true,
-    },
-    {
-        name: "School",
-        cost: 1000.00,
-        image: "./../Images/HomePageIm1.jpg",
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "Slow"
-        ],
-        parts_list: [
-            "case 3",
-            "none",
-            "cpu 3",
-            "Intel 3"
-        ],
-        finished: true,
-    },
-    {
-        name: "School",
-        cost: 1000.00,
-        image: "./../Images/HomePageIm1.jpg",
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "Slow"
-        ],
-        parts_list: [
-            "case 3",
-            "none",
-            "cpu 3",
-            "Intel 3"
-        ],
-        finished: true,
-    },
-    {
-        name: "School",
-        cost: 1000.00,
-        image: "./../Images/HomePageIm1.jpg",
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "Slow"
-        ],
-        parts_list: [
-            "case 3",
-            "none",
-            "cpu 3",
-            "Intel 3"
-        ],
-        finished: true,
-    },
-    {
-        name: "School",
-        cost: 1000.00,
-        image: "./../Images/HomePageIm1.jpg",
-        pros: [
-            "Cheap",
-            "Small"
-        ],
-        cons: [
-            "Slow"
-        ],
-        parts_list: [
-            "case 3",
-            "none",
-            "cpu 3",
-            "Intel 3"
-        ],
-        finished: true,
-    }
-]
+import { useEffect, useState } from 'react';
+
 
 export default function TemplateBuilds() {
-    let navigate = useNavigate(); 
-    const routeChange = () =>{ 
-        let path = `/Design_Studio/33/`; 
+    const [templates, setTemplates] = useState([]);
+    
+    const fetchData = async (endpoint, setter) => {
+        try {
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setter(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchData("http://127.0.0.1:8000/all_templates/", setTemplates);
+    }, []);
+
+
+    let navigate = useNavigate();
+    const routeChange = () => {
+        let path = `/Design_Studio/33/`;
         navigate(path);
     }
+    let i = 0;
     return (
         <div className='full-card'>
-                {builds.map((build) =>  (
-                    makeCard(build, routeChange)                 
-                ))}
-         </div>
+            {templates.map((template) => (
+                makeCard(template, routeChange)
+            ))}
+        </div>
     );
 };
 
 
 
 
-function makeCard(build, routeChange) {
-    
+function makeCard(template, routeChange) {
+    let partsDict = template.parts;
+    // get the parts list
+
     return (
-        <Card style={{ width: '20rem', padding: '20px', margin: '20px', backgroundColor: "#333333", color: 'white'}}>
-          <Card.Body>
-            <Card.Title style={{fontSize: '2rem'}}>{build.name}</Card.Title>
-            <Card.Text>
-              Cost: ${build.cost} <br></br>
-              Pros: {makeList(build.pros)}
-              Cons: {makeList(build.cons)}
-            </Card.Text>
-            <ListGroup style={{ backgroundColor: "#333333", color: 'red'}}>
-                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Case: {build.parts_list[0]}</ListGroup.Item>
-                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {build.parts_list[1]}</ListGroup.Item>
+        <Card style={{ width: '45%', padding: '20px', margin: '20px', backgroundColor: "#333333", color: 'white' }}>
+            <Card.Body>
+                <Card.Title style={{ fontSize: '2rem' }}>{template.template}</Card.Title>
+                <Card.Text>
+                    Cost: ${template.cost} <br></br>
+                    <p style={{ margin: '10px 0px' }}>{template.problem_description}</p>
+                </Card.Text>
+                <ListGroup style={{ backgroundColor: "#333333", color: 'red' }}>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CPU:</b> {partsDict["CPU"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CASE:</b> {partsDict["CASE"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CPU COOLER:</b> {partsDict["CPU_COOLER"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>MOTHERBOARD:</b> {partsDict["MOTHERBOARD"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>MEMORY:</b> {partsDict["MEMORY"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>STORAGE</b> {partsDict["STORAGE"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>GPU:</b> {partsDict["GPU"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>POWER SUPPLY:</b> {partsDict["POWER_SUPPLY"]}</ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>OPERATING SYSTEM:</b> {partsDict["OPERATING_SYSTEM"]}</ListGroup.Item>
+                    {/* <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {build.parts_list[1]}</ListGroup.Item>
                 <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU: {build.parts_list[2]}</ListGroup.Item>
-                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Processor: {build.parts_list[3]}</ListGroup.Item>
-            </ListGroup>
-            <Button 
-            variant="primary"
-            size="lg"
-            style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
-            onClick={routeChange}>Customize</Button>
-          </ Card.Body>
+                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Processor: {build.parts_list[3]}</ListGroup.Item> */}
+                </ListGroup>
+                <Button
+                    variant="primary"
+                    size="lg"
+                    style={{ padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px' }}
+                    onClick={routeChange}>Customize</Button>
+            </ Card.Body>
         </Card>
-      );
+    );
 }
 
-function makeList(list){
+function makeList(list) {
     return (
         <ul>
             {list.map((li) => (<li>{li}</li>))}

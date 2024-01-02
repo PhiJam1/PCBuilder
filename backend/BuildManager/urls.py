@@ -11,5 +11,8 @@ urlpatterns = [
     path('all_memories/', views.get_memories),
     path('all_gpus/', views.get_gpu),
     path('all_power_supply/', views.get_power_supplies),
-    path('all_operating_systems/', views.get_operating_systems)
+    path('all_operating_systems/', views.get_operating_systems),
+    path('all_templates/', views.get_templates),
+    path("get_cost/", views.get_cost),
+    path("get_part_names/", views.get_part_names)
 ]
