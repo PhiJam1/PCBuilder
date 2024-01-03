@@ -31,11 +31,32 @@ export default function TemplateBuilds() {
 
 
     let navigate = useNavigate();
-    const routeChange = () => {
-        let path = `/Design_Studio/33/`;
-        navigate(path);
+    const routeChange = async (buildNum) => {
+        console.log(buildNum)
+        // make a new build registered with the backend
+        try {
+            const response = await fetch('http://127.0.0.1:8000/register_build/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                // Add any additional headers here
+              },
+              body: JSON.stringify({"templateBuildNum": buildNum}) // will be 0 for a start from scratch
+            });
+      
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+      
+            const responseData = await response.json();
+            console.log('POST request successful:', responseData);
+            navigate("/Design_Studio/" + responseData.buildNum);
+          } catch (error) {
+            console.error('Error making POST request - 333:', error);
+          }
     }
-    let i = 0;
+
+    
     return (
         <div className='full-card'>
             {templates.map((template) => (
@@ -75,10 +96,12 @@ function makeCard(template, routeChange) {
                 <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Processor: {build.parts_list[3]}</ListGroup.Item> */}
                 </ListGroup>
                 <Button
+
+
                     variant="primary"
                     size="lg"
-                    style={{ padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px' }}
-                    onClick={routeChange}>Customize</Button>
+                    style={{ padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px 0px'}}
+                    onClick={() => routeChange(template["buildNum"])}>Customize</Button>
             </ Card.Body>
         </Card>
     );

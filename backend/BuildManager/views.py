@@ -122,3 +122,38 @@ def get_part_names(request):
              'OPERATING_SYSTEM': build.currOperatingSystem.name
              }
     return Response(parts, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def register_build(request):
+    templateBuildNum = request.data["templateBuildNum"];
+    newBuild = Build()
+    if (templateBuildNum == 0):
+        # bare, start from scratch build
+        newBuild.status = "UNSUBMITTED"
+        newBuild.template = "CUSTOM"
+    else:
+        templateBuild = Build.objects.get(buildNum=templateBuildNum)
+        newBuild.status = "UNSUBMITTED"
+        newBuild.template = templateBuild.template
+        newBuild.currCase = templateBuild.currCase
+        newBuild.currCPU= templateBuild.currCPU
+        newBuild.currCPUCooler = templateBuild.currCPUCooler
+        newBuild.currMotherboard = templateBuild.currMotherboard
+        newBuild.currMemory = templateBuild.currMemory
+        newBuild.currStorage = templateBuild.currStorage
+        newBuild.currGPU = templateBuild.currGPU
+        newBuild.currPowerSupply = templateBuild.currPowerSupply
+        newBuild.currOperatingSystem = templateBuild.currOperatingSystem
+    newBuild.save()
+    return Response({"buildNum": newBuild.buildNum}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def valid_build_num(request):
+    buildNum = request.GET.get('buildNum')
+
+    try:
+        val = Build.objects.get(buildNum=buildNum)
+        return Response({"valid": True})
+    except Build.DoesNotExist:
+        return Response({"valid": False})

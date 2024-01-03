@@ -12,17 +12,59 @@ import { useState } from "react";
 
 
 export default function ContinueOptions() {
-    let navigate = useNavigate(); 
-    function routeChange(buildNumber) { 
-      if (buildNumber == "") {
-        // generate a new build number
-        let num = 44;
-        navigate("/Design_Studio/" + num);
-        return;
+
+
+  let navigate = useNavigate();
+  const routeChange = async (buildNum) => {
+    if (buildNum === "") { // start from scratch
+      // make a new build registered with the backend
+        try {
+            const response = await fetch('http://127.0.0.1:8000/register_build/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                // Add any additional headers here
+              },
+              body: JSON.stringify({"templateBuildNum": 0}) // will be 0 for a start from scratch
+            });
+      
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+      
+            const responseData = await response.json();
+            console.log('POST request successful:', responseData);
+            navigate("/Design_Studio/" + responseData.buildNum);
+        } catch (error) {
+          console.error('Error making POST request - 333:', error);
+        }
+    } else {
+      // check to see if this is a valid build 
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/valid_build_num/?buildNum=${buildNum}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any additional headers here
+          },
+          // body: JSON.stringify({"buildNum": buildNum}) // will be 0 for a start from scratch
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const responseData = await response.json();
+        if (responseData["valid"]) {
+          navigate("/Design_Studio/" + buildNum);
+        } else {
+          setInvalidBuild(true);
+        }
+      } catch (error) {
+        console.error('Error making POST request:', error);
       }
-        let path = `/Order_Status/` + buildNumber; 
-        navigate(path);
     }
+  }
 
 
     const [invalidBuild, setInvalidBuild] = useState(false);

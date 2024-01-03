@@ -14,5 +14,7 @@ urlpatterns = [
     path('all_operating_systems/', views.get_operating_systems),
     path('all_templates/', views.get_templates),
     path("get_cost/", views.get_cost),
-    path("get_part_names/", views.get_part_names)
+    path("get_part_names/", views.get_part_names),
+    path("register_build/", views.register_build),
+    path("valid_build_num/", views.valid_build_num)
 ]

@@ -19,11 +19,18 @@ class Part(models.Model):
 class Build(models.Model):
 
     def get_build_num():
-        return random.randint(11, 1000)
+        num = 0
+        while True:
+            try:
+                num = random.randint(11, 100000)
+                val = Build.objects.get(buildNum=num)
+            except Build.DoesNotExist:
+                break
+        return num
     
     # logistic information
     buildNum = models.IntegerField(unique=True, default=get_build_num)
-    status = models.CharField(max_length=200)
+    status = models.CharField(max_length=200) # set to 'TEMPLATE' if this is a boilerplate/preset build
     phoneNumber = models.CharField(max_length=100, blank=True)
     email = models.CharField(max_length=100, blank=True)
     template = models.CharField(max_length=200) # what template this is based off of

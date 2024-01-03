@@ -12,13 +12,36 @@ export default function OrderQuery() {
     let navigate = useNavigate(); 
     
 
-    function getBuild() {
-        let num = document.getElementById("buildNumOS").value;
-        if (num === "") {
+    async function getBuild() {
+        let buildNum = document.getElementById("buildNumOS").value;
+        if (buildNum === "") {
             setInvalidBuild(true);
-        } else {
-            navigate(num);
+            return;
         }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/valid_build_num/?buildNum=${buildNum}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                // Add any additional headers here
+              },
+              // body: JSON.stringify({"buildNum": buildNum}) // will be 0 for a start from scratch
+            });
+      
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+      
+            const responseData = await response.json();
+            if (responseData["valid"]) {
+              navigate(buildNum);
+            } else {
+              setInvalidBuild(true);
+            }
+          } catch (error) {
+            console.error('Error making POST request:', error);
+          }
     }
 
 
