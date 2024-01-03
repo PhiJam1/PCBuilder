@@ -33,113 +33,88 @@ export const PartsTable = (props) => {
         }
     };
 
-    /* CASES */
     const [cases, setCases] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_cases/", setCases);
-    }, []);
-    
-    // set up react useState hook for current case. Set it with data from the backend
     const [currCase, setCurrCase] = useState();
+    const [cpus, setCpus] = useState([]);
+    const [currCPU, setCurrCPU] = useState();
+    const [CPUCoolers, setCPUCoolers] = useState([]);
+    const [currCPUCooler, setCurrCPUCooler] = useState();
+    const [motherboards, setMotherboards] = useState([]);
+    const [currMotherboard, setCurrMotherboard] = useState();
+    const [memories , setMemories] = useState([]);
+    const [currMemory, setCurrMemory] = useState();
+    const [storages, setStorages] = useState([]);
+    const [currStorage, setCurrStorage] = useState();
+    const [GPUs, setGPUs] = useState([]);
+    const [currGPU, setCurrGPU] = useState();
+    const [powerSupply, setPowerSupply] = useState([]);
+    const [currPowerSupply, setCurrPowerSupply] = useState();
+    const [operatingSystem, setOperatingSystems] = useState([]);
+    const [currOperatingSystem, setCurrOperatingSystem] = useState();
+
+    // set initial values
+    useEffect(() => {
+        // catalog parts
+        fetchData("http://127.0.0.1:8000/all_cpus/", setCpus);
+        fetchData("http://127.0.0.1:8000/all_cases/", setCases);
+        fetchData("http://127.0.0.1:8000/all_cpu_coolers/", setCPUCoolers);
+        fetchData("http://127.0.0.1:8000/all_motherboards/", setMotherboards);
+        fetchData("http://127.0.0.1:8000/all_memories/", setMemories);
+        fetchData("http://127.0.0.1:8000/all_storage/", setStorages);
+        fetchData("http://127.0.0.1:8000/all_gpus/", setGPUs);
+        fetchData("http://127.0.0.1:8000/all_power_supply/", setPowerSupply);
+        fetchData("http://127.0.0.1:8000/all_operating_systems/", setOperatingSystems);
+
+        // parts for the current build
+        fetchData("http://127.0.0.1:8000/curr_cpu/", setCurrCPU);
+        fetchData("http://127.0.0.1:8000/curr_case/", setCurrCase);
+        fetchData("http://127.0.0.1:8000/curr_cpu_cooler/", setCurrCPUCooler);
+        fetchData("http://127.0.0.1:8000/curr_motherboard/", setCurrMotherboard);
+        fetchData("http://127.0.0.1:8000/curr_memories/", setCurrMemory);
+        fetchData("http://127.0.0.1:8000/curr_storage/", setCurrStorage);
+        fetchData("http://127.0.0.1:8000/curr_gpu/", setCurrGPU);
+        fetchData("http://127.0.0.1:8000/curr_power_supply/", setCurrPowerSupply);
+        fetchData("http://127.0.0.1:8000/curr_operating_system/", setCurrOperatingSystem);
+    }, []);
+
+
     function updateCurrCase(title) {
         //todo: make a backend request to update this as well. 
         setCurrCase(title);
     }
-
-    /* CPUs */
-    const [cpus, setCpus] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_cpus/", setCpus);
-    }, []);
-
-    const [currCPU, setCurrCPU] = useState();
+    
     function updateCurrCPU(title) {
         //todo: make a backend request to update this as well.
         setCurrCPU(title);
     }
     
-
-    /* CPU Coolers */
-    const [CPUCoolers, setCPUCoolers] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_cpus/", setCPUCoolers);
-    }, []);
-    const [currCPUCooler, setCurrCPUCooler] = useState();
-    
     function updateCurrCPUCooler(title) {
         setCurrCPUCooler(title);
     }
 
-
-    /* MOTHERBOARDS */
-    const [motherboards, setMotherboards] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_motherboards/", setMotherboards);
-    }, []);
-    
-    const [currMotherboard, setCurrMotherboard] = useState();
-    
     function updateCurrMotherboard(title) {
         setCurrMotherboard(title);
     }
-
-
-    /* MEMORIES */
-    const [memories , setMemories] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_memories/", setMemories);
-    }, []);
-
-    const [currMemory, setCurrMemory] = useState();
 
     function updateCurrMemory(title) {
         setCurrMemory(title);
     }
 
-    /*  STORAGES */
-    const [storages, setStorages] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_storage/", setStorages);
-    }, []);
-    const [currStorage, setCurrStorage] = useState();
-
     function updateCurrStorage(title) {
         setCurrStorage(title);
     }
-
-
-    /* GPU */
-    const [GPUs, setGPUs] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_gpus/", setGPUs);
-    }, []);
     
-    const [currGPU, setCurrGPU] = useState();
     function updateCurrGPU(title) {
         setCurrGPU(title);
     }
-
-    const [powerSupply, setPowerSupply] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_power_supply/", setPowerSupply);
-    }, []);
-    const [currPowerSupply, setCurrPowerSupply] = useState();
 
     function updateCurrPowerSupply(title) {
         setCurrPowerSupply(title);
     }
 
-    
-    const [operatingSystem, setOperatingSystems] = useState([]);
-    useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_operating_systems/", setOperatingSystems);
-    }, []);
-    const [currOperatingSystem, setCurrOperatingSystem] = useState();
-
     function updateCurrOperatingSystem(title) {
         setCurrOperatingSystem(title);
     }
-
 
     return ( // this stuff is JSX
         <div className="list-group list-group-mine">
