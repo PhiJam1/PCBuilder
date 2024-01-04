@@ -157,3 +157,112 @@ def valid_build_num(request):
         return Response({"valid": True})
     except Build.DoesNotExist:
         return Response({"valid": False})
+    
+
+@api_view(['GET', 'POST'])
+def curr_case(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currCase.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currCase = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_cpu(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currCPU.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currCPU = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_cpu_cooler(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currCPUCooler.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currCPUCooler = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_motherboard(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currMotherboard.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currMotherboard = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_memory(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currMemory.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currMemory = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_storage(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currStorage.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currStorage = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_gpu(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currGPU.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currGPU = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_power_supply(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currPowerSupply.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currPowerSupply = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET', 'POST'])
+def curr_operating_system(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    if (request.method == 'GET'):
+        return Response(build.currOperatingSystem.name, status=status.HTTP_200_OK)
+    if (request.method == 'POST'):
+        newPart = request.data["newPart"]
+        build.currOperatingSystem = Part.objects.get(name=newPart)
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    # return Response(status=status.HTTP_100_CONTINUE)

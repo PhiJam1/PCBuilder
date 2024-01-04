@@ -27,7 +27,7 @@ export const PartsTable = (props) => {
           }
           const data = await response.json();
           catalogSetter(data);
-          console.log(data);
+        //   console.log(data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -66,53 +66,68 @@ export const PartsTable = (props) => {
         fetchData("http://127.0.0.1:8000/all_operating_systems/", setOperatingSystems);
 
         // parts for the current build
-        fetchData("http://127.0.0.1:8000/curr_cpu/", setCurrCPU);
-        fetchData("http://127.0.0.1:8000/curr_case/", setCurrCase);
-        fetchData("http://127.0.0.1:8000/curr_cpu_cooler/", setCurrCPUCooler);
-        fetchData("http://127.0.0.1:8000/curr_motherboard/", setCurrMotherboard);
-        fetchData("http://127.0.0.1:8000/curr_memories/", setCurrMemory);
-        fetchData("http://127.0.0.1:8000/curr_storage/", setCurrStorage);
-        fetchData("http://127.0.0.1:8000/curr_gpu/", setCurrGPU);
-        fetchData("http://127.0.0.1:8000/curr_power_supply/", setCurrPowerSupply);
-        fetchData("http://127.0.0.1:8000/curr_operating_system/", setCurrOperatingSystem);
+        fetchData(`http://127.0.0.1:8000/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
+        fetchData(`http://127.0.0.1:8000/curr_case/?buildNum=${buildNum}`, setCurrCase);
+        fetchData(`http://127.0.0.1:8000/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
+        fetchData(`http://127.0.0.1:8000/curr_motherboard/?buildNum=${buildNum}`, setCurrMotherboard);
+        fetchData(`http://127.0.0.1:8000/curr_memory/?buildNum=${buildNum}`, setCurrMemory);
+        fetchData(`http://127.0.0.1:8000/curr_storage/?buildNum=${buildNum}`, setCurrStorage);
+        fetchData(`http://127.0.0.1:8000/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
+        fetchData(`http://127.0.0.1:8000/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
+        fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
     }, []);
 
+    function setCurrBackend(endpoint, title) {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"newPart": title})
+        };
+        fetch(`http://127.0.0.1:8000/${endpoint}/?buildNum=${buildNum}`, requestOptions)
+    }
 
     function updateCurrCase(title) {
-        //todo: make a backend request to update this as well. 
+        setCurrBackend("curr_case", title);
         setCurrCase(title);
     }
     
     function updateCurrCPU(title) {
-        //todo: make a backend request to update this as well.
+        setCurrBackend("curr_cpu", title);
         setCurrCPU(title);
     }
     
     function updateCurrCPUCooler(title) {
+        setCurrBackend("curr_cpu_cooler", title);
         setCurrCPUCooler(title);
     }
 
     function updateCurrMotherboard(title) {
+        setCurrBackend("curr_motherboard", title);
         setCurrMotherboard(title);
     }
 
     function updateCurrMemory(title) {
+        setCurrBackend("curr_memory", title);
         setCurrMemory(title);
     }
 
     function updateCurrStorage(title) {
+        setCurrBackend("curr_storage", title);
         setCurrStorage(title);
     }
     
     function updateCurrGPU(title) {
+        setCurrBackend("curr_gpu", title);
         setCurrGPU(title);
     }
 
     function updateCurrPowerSupply(title) {
+        setCurrBackend("curr_power_supply", title);
         setCurrPowerSupply(title);
     }
 
     function updateCurrOperatingSystem(title) {
+        setCurrBackend("curr_operating_system", title);
         setCurrOperatingSystem(title);
     }
 

@@ -16,5 +16,14 @@ urlpatterns = [
     path("get_cost/", views.get_cost),
     path("get_part_names/", views.get_part_names),
     path("register_build/", views.register_build),
-    path("valid_build_num/", views.valid_build_num)
+    path("valid_build_num/", views.valid_build_num),
+    path('curr_case/', views.curr_case),
+    path('curr_cpu/', views.curr_cpu),
+    path('curr_cpu_cooler/', views.curr_cpu_cooler),
+    path('curr_motherboard/', views.curr_motherboard),
+    path('curr_memory/', views.curr_memory),
+    path('curr_storage/', views.curr_storage),
+    path('curr_gpu/', views.curr_gpu),
+    path('curr_power_supply/', views.curr_power_supply),
+    path('curr_operating_system/', views.curr_operating_system)
 ]
