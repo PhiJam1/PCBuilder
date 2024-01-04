@@ -13,6 +13,7 @@ urlpatterns = [
     path('all_power_supply/', views.get_power_supplies),
     path('all_operating_systems/', views.get_operating_systems),
     path('all_templates/', views.get_templates),
+    path('get_build_info/', views.get_build_info),
     path("get_cost/", views.get_cost),
     path("get_part_names/", views.get_part_names),
     path("register_build/", views.register_build),
@@ -25,5 +26,11 @@ urlpatterns = [
     path('curr_storage/', views.curr_storage),
     path('curr_gpu/', views.curr_gpu),
     path('curr_power_supply/', views.curr_power_supply),
-    path('curr_operating_system/', views.curr_operating_system)
+    path('curr_operating_system/', views.curr_operating_system),
+    path('get_template_name/', views.get_template_name),
+    path('get_status/', views.get_status),
+    path('update_status/', views.update_status),
+    path('update_contact_info/', views.update_contact_info),
+    path('get_email/', views.get_email),
+    path('get_phone_number/', views.get_phone_number)
 ]

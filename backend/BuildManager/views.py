@@ -85,6 +85,20 @@ def get_templates(request):
         
     return Response(datas, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_build_info(request):
+    print("\n\nhere\n\n")
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    
+    serializer = BuildSerializer(build, many=False)
+    
+    datas = serializer.data
+    
+    datas["cost"] = get_cost_val(build)
+    datas["parts"] = get_part_names_val(build)
+    print("\n\nhere 2\n\n")
+    return Response(datas, status=status.HTTP_200_OK)
+
 def get_cost_val(build):
     cost = build.currCase.cost + build.currCPU.cost 
     cost += build.currCPUCooler.cost + build.currMotherboard.cost 
@@ -104,17 +118,17 @@ def get_part_names_val(build):
 
 @api_view(['GET'])
 def get_cost(request):
-    build = Build.objects.get(buildNum=request.data['buildNum'])
+    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
     cost = build.currCase.cost + build.currCPU.cost 
     cost += build.currCPUCooler.cost + build.currMotherboard.cost 
     cost += build.currMemory.cost + build.currStorage.cost
     cost += build.currGPU.cost + build.currPowerSupply.cost
     cost += build.currOperatingSystem.cost + build.otherCost
-    return Response({"cost": cost}, status=status.HTTP_200_OK)
+    return Response(cost, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_part_names(request):
-    build = Build.objects.get(buildNum=request.data['buildNum'])
+    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
     parts = {'CPU': build.currCase.name, 'CASE': build.currCPU.name,
              'CPU_COOLER': build.currCPUCooler.name, 'MOTHERBOARD': build.currMotherboard.name,
              'MEMORY': build.currMemory.name, 'STORAGE': build.currStorage.name,
@@ -266,3 +280,38 @@ def curr_operating_system(request):
         build.save()
         return Response(status=status.HTTP_202_ACCEPTED)
     # return Response(status=status.HTTP_100_CONTINUE)
+
+@api_view(['GET'])
+def get_template_name(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.template, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_status(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.status, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def update_status(request):
+    build = Build.objects.get(buildNum=request.data["buildNum"])
+    build.status = request.data["status"]
+    build.save()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+@api_view(['POST'])
+def update_contact_info(request):
+    build = Build.objects.get(buildNum=request.data["buildNum"])
+    build.email = request.data["email"]
+    build.phoneNumber = request.data["phone_number"]
+    build.save()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+@api_view(['GET'])
+def get_email(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.email, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_phone_number(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.phoneNumber, status=status.HTTP_200_OK)
