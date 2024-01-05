@@ -158,11 +158,11 @@ def register_build(request):
     newBuild = Build()
     if (templateBuildNum == 0):
         # bare, start from scratch build
-        newBuild.status = "UNSUBMITTED"
+        newBuild.status = "UNFINISHED"
         newBuild.template = "CUSTOM"
     else:
         templateBuild = Build.objects.get(buildNum=templateBuildNum)
-        newBuild.status = "UNSUBMITTED"
+        newBuild.status = "UNFINISHED"
         newBuild.template = templateBuild.template
         newBuild.currCase = templateBuild.currCase
         newBuild.currCPU= templateBuild.currCPU

@@ -36,6 +36,7 @@ export default function FinalOrderStatus() {
     const [currPhoneNumber, setCurrPhoneNumber] = useState("");
     const [savedContactInfo, setSavedContactInfo] = useState(false);
     const [other, setOther] = useState();
+    const [pulled, setPulled] = useState(false);
     const [otherCost, setOtherCost] = useState();
     const [currCosts, setCurrCosts] = useState({
         "CPU": 0.00,
@@ -49,7 +50,7 @@ export default function FinalOrderStatus() {
         "OPERATING_SYSTEM": 0.00
     });
 
-    function update_contact_info() {
+    async function update_contact_info() {
         let email = document.getElementById("email-final").value;
         let phone = document.getElementById("phone-final").value;
         if (email === "" || phone === "") {
@@ -63,14 +64,16 @@ export default function FinalOrderStatus() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
         };
-        fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
+        await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
         setSavedContactInfo(true);
     }
-    function updateStatus() {
+    async function updateStatus() {
+        console.log("submit clicked")
+        
         let email = document.getElementById("email-final").value;
         let phone = document.getElementById("phone-final").value;
 
-        if (currStatus === "UNFINISHED" && (email === "" || phone === "")) {
+        if (email === "" || phone === "") {
             setInvalidForm(true);
             return;
         }
@@ -82,15 +85,17 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
             };
-            fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
+            await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
             setSubmitted(true);
+            
             // update the contact info
             const requestOptionsContactInfo = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
             };
-            fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
+            await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
+            setSavedContactInfo(true);
         } else if (currStatus === "PULLED") {
             const requestOptionsStatus = {
                 method: 'POST',
@@ -98,17 +103,22 @@ export default function FinalOrderStatus() {
                 body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
             };
             fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus);
+            
             setSubmitted(true);
+            setCurrStatus("SUBMITTED")
+            // setPulled(!pulled);
         } else {
             const requestOptionsStatus = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "PULLED"})
             };
-            fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
+            await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
             setSubmitted(false);
         }
         setInvalidForm(false);
+        setPulled(!pulled);
+        
     }
 
     const phoneChange = (event) => {
@@ -163,10 +173,10 @@ export default function FinalOrderStatus() {
     }, []);
 
     useEffect(() => {
-        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);
         fetchData(`http://127.0.0.1:8000/get_email/?buildNum=${buildNum}`, setCurrEmail);
         fetchData(`http://127.0.0.1:8000/get_phone_number/?buildNum=${buildNum}`, setCurrPhoneNumber);
-    }, [submitted]);
+        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);
+    }, [submitted, savedContactInfo, pulled]);
 
     return (
         <Row style={{margin: '0px'}}>
