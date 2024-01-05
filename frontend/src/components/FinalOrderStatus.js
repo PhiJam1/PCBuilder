@@ -35,6 +35,17 @@ export default function FinalOrderStatus() {
     const [currEmail, setCurrEmail] = useState("");
     const [currPhoneNumber, setCurrPhoneNumber] = useState("");
     const [savedContactInfo, setSavedContactInfo] = useState(false);
+    const [currCosts, setCurrCosts] = useState({
+        "CPU": 0.00,
+        "CASE": 0.00,
+        "CPU_COOLER": 0.00,
+        "MOTHERBOARD": 0.00,
+        "MEMORY": 0.00,
+        "STORAGE": 0.00,
+        "GPU": 0.00,
+        "POWER_SUPPLY": 0.00,
+        "OPERATING_SYSTEM": 0.00
+    });
 
     function update_contact_info() {
         let email = document.getElementById("email-final").value;
@@ -57,12 +68,12 @@ export default function FinalOrderStatus() {
         let email = document.getElementById("email-final").value;
         let phone = document.getElementById("phone-final").value;
 
-        if (currStatus === "UNSUBMITTED" && (email === "" || phone === "")) {
+        if (currStatus === "UNFINISHED" && (email === "" || phone === "")) {
             setInvalidForm(true);
             return;
         }
 
-        if (currStatus === "UNSUBMITTED") {
+        if (currStatus === "UNFINISHED") {
             // update the status 
             const requestOptionsStatus = {
                 method: 'POST',
@@ -144,6 +155,7 @@ export default function FinalOrderStatus() {
         fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
         fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCost);
         fetchData(`http://127.0.0.1:8000/get_template_name/?buildNum=${buildNum}`, setCurrTemplateName);
+        fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
     }, []);
 
     useEffect(() => {
@@ -160,15 +172,15 @@ export default function FinalOrderStatus() {
                     <h2><Badge bg="primary" size="lg">Estimated Cost: ${currCost}</ Badge> </h2>
                     <h4>Template: {currTemplateName}</h4>
                     <ListGroup style={{ backgroundColor: "#333333", color: 'red'}}>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Case: {currCase} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU: {currCPU} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU COOLER: {currCPUCooler} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>MOTHERBOARD: {currMotherboard} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>MEMORY: {currMemory} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>STORAGE: {currStorage} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {currGPU} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>POWER SUPPLY: {currPowerSupply} </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OPERATING SYSTEM: {currOperatingSystem} </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Case: {currCase} | ${currCosts["CASE"]} </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU: {currCPU} | ${currCosts["CPU"]} </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU COOLER: {currCPUCooler} | ${currCosts["CPU_COOLER"]} </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>MOTHERBOARD: {currMotherboard} | ${currCosts["MOTHERBOARD"]}  </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>MEMORY: {currMemory} | ${currCosts["MEMORY"]}  </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>STORAGE: {currStorage} | ${currCosts["STORAGE"]}  </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {currGPU} | ${currCosts["GPU"]}  </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>POWER SUPPLY: {currPowerSupply} | ${currCosts["POWER_SUPPLY"]}  </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OPERATING SYSTEM: {currOperatingSystem} | ${currCosts["OPERATING_SYSTEM"]}  </ListGroup.Item>
                         <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OTHER: {currGPU} </ListGroup.Item>
                     </ListGroup>
                     <Button 

@@ -109,7 +109,7 @@ def get_cost_val(build):
     return cost
 
 def get_part_names_val(build):
-    parts = {'CPU': build.currCase.name, 'CASE': build.currCPU.name,
+    parts = {'CPU': build.currCPU.name, 'CASE': build.currCase.name,
              'CPU_COOLER': build.currCPUCooler.name, 'MOTHERBOARD': build.currMotherboard.name,
              'MEMORY': build.currMemory.name, 'STORAGE': build.currStorage.name,
              'GPU': build.currGPU.name, 'POWER_SUPPLY': build.currPowerSupply.name, 
@@ -118,7 +118,7 @@ def get_part_names_val(build):
     return parts
 
 def get_part_costs(build):
-    costs = {'CPU': build.currCase.cost, 'CASE': build.currCPU.cost,
+    costs = {'CPU': build.currCPU.cost, 'CASE': build.currCase.cost,
              'CPU_COOLER': build.currCPUCooler.cost, 'MOTHERBOARD': build.currMotherboard.cost,
              'MEMORY': build.currMemory.cost, 'STORAGE': build.currStorage.cost,
              'GPU': build.currGPU.cost, 'POWER_SUPPLY': build.currPowerSupply.cost, 
@@ -126,6 +126,11 @@ def get_part_costs(build):
              }
     return costs
 
+@api_view(['GET'])
+def get_parts_cost(request):
+    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
+    costs = get_part_costs(build)
+    return Response(costs, status=status.HTTP_200_OK)
 @api_view(['GET'])
 def get_cost(request):
     build = Build.objects.get(buildNum=request.GET.get('buildNum'))
@@ -325,3 +330,5 @@ def get_email(request):
 def get_phone_number(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     return Response(build.phoneNumber, status=status.HTTP_200_OK)
+
+

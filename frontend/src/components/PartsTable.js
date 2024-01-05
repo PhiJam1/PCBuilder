@@ -51,6 +51,18 @@ export const PartsTable = (props) => {
     const [currPowerSupply, setCurrPowerSupply] = useState();
     const [operatingSystem, setOperatingSystems] = useState([]);
     const [currOperatingSystem, setCurrOperatingSystem] = useState();
+    const [currCost, setCurrCost] = useState();
+    const [currCosts, setCurrCosts] = useState({
+        "CPU": 0.00,
+        "CASE": 0.00,
+        "CPU_COOLER": 0.00,
+        "MOTHERBOARD": 0.00,
+        "MEMORY": 0.00,
+        "STORAGE": 0.00,
+        "GPU": 0.00,
+        "POWER_SUPPLY": 0.00,
+        "OPERATING_SYSTEM": 0.00
+    });
 
     // set initial values
     useEffect(() => {
@@ -75,7 +87,14 @@ export const PartsTable = (props) => {
         fetchData(`http://127.0.0.1:8000/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
         fetchData(`http://127.0.0.1:8000/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
         fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
+        fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
+
+        // fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
     }, []);
+
+    useEffect(() => {
+        fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
+    }, [currCase, currCPU, currCPUCooler, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
 
     function setCurrBackend(endpoint, title) {
         const requestOptions = {
@@ -130,41 +149,41 @@ export const PartsTable = (props) => {
         setCurrBackend("curr_operating_system", title);
         setCurrOperatingSystem(title);
     }
-
     return ( // this stuff is JSX
         <div className="list-group list-group-mine">
             <UpdateExplanation />
+            <h4>Estimated Cost: ${currCost}</h4>
             <Tab.Container id="list-group-tabs-example" defaultActiveKey="#case"  >
                 <Row >
                     <Col sm={3} >
                         <ListGroup >
                             <ListGroup.Item action href="#case">
-                                Case | {currCase ? currCase + " | $" + cases.find(it => it.name === currCase).cost:  <Badge bg="info">Unselected</Badge>}
+                                Case | {currCase ? currCase + " | $" + currCosts["CASE"]:  <Badge bg="info">Unselected</Badge>}
 
                             </ListGroup.Item>
                             <ListGroup.Item action href="#cpu">
-                                CPU | {currCPU ? currCPU :  <Badge bg="info">Unselected</Badge>}
+                                CPU | {currCPU ? currCPU + " | $" + currCosts["CPU"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#cpu_cooler">
-                                CPU Cooler | {currCPUCooler ? currCPUCooler :  <Badge bg="info">Unselected</Badge>}
+                                CPU Cooler | {currCPUCooler ? currCPUCooler + " | $" + currCosts["CPU_COOLER"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#motherboard">
-                                Motherboard | {currMotherboard ? currMotherboard :  <Badge bg="info">Unselected</Badge>}
+                                Motherboard | {currMotherboard ? currMotherboard + " | $" + currCosts["MOTHERBOARD"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#memory">
-                                Memory | {currMemory ? currMemory :  <Badge bg="info">Unselected</Badge>}
+                                Memory | {currMemory ? currMemory + " | $" + currCosts["MEMORY"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#storage">
-                                Storage | {currStorage ? currStorage :  <Badge bg="info">Unselected</Badge>}
+                                Storage | {currStorage ? currStorage + " | $" + currCosts["STORAGE"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#gpu">
-                                GPU | {currGPU ? currGPU :  <Badge bg="info">Unselected</Badge>}
+                                GPU | {currGPU ? currGPU + " | $" + currCosts["GPU"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#power_supply">
-                                Power Supply | {currPowerSupply ? currPowerSupply :  <Badge bg="info">Unselected</Badge>}
+                                Power Supply | {currPowerSupply ? currPowerSupply + " | $" + currCosts["POWER_SUPPLY"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#operating_system">
-                                Operating System | {currOperatingSystem ? currOperatingSystem :  <Badge bg="info">Unselected</Badge>}
+                                Operating System | {currOperatingSystem ? currOperatingSystem + " | $" + currCosts["OPERATING_SYSTEM"]:  <Badge bg="info">Unselected</Badge>}
                             </ListGroup.Item>
                             <ListGroup.Item action href="#other">
                                 Other

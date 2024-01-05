@@ -32,5 +32,6 @@ urlpatterns = [
     path('update_status/', views.update_status),
     path('update_contact_info/', views.update_contact_info),
     path('get_email/', views.get_email),
-    path('get_phone_number/', views.get_phone_number)
+    path('get_phone_number/', views.get_phone_number),
+    path('get_part_costs/', views.get_parts_cost)
 ]
