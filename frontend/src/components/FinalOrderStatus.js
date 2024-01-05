@@ -35,6 +35,8 @@ export default function FinalOrderStatus() {
     const [currEmail, setCurrEmail] = useState("");
     const [currPhoneNumber, setCurrPhoneNumber] = useState("");
     const [savedContactInfo, setSavedContactInfo] = useState(false);
+    const [other, setOther] = useState();
+    const [otherCost, setOtherCost] = useState();
     const [currCosts, setCurrCosts] = useState({
         "CPU": 0.00,
         "CASE": 0.00,
@@ -156,6 +158,8 @@ export default function FinalOrderStatus() {
         fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCost);
         fetchData(`http://127.0.0.1:8000/get_template_name/?buildNum=${buildNum}`, setCurrTemplateName);
         fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
+        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${buildNum}`, setOther);
+        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${buildNum}`, setOtherCost);
     }, []);
 
     useEffect(() => {
@@ -181,7 +185,7 @@ export default function FinalOrderStatus() {
                         <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {currGPU} | ${currCosts["GPU"]}  </ListGroup.Item>
                         <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>POWER SUPPLY: {currPowerSupply} | ${currCosts["POWER_SUPPLY"]}  </ListGroup.Item>
                         <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OPERATING SYSTEM: {currOperatingSystem} | ${currCosts["OPERATING_SYSTEM"]}  </ListGroup.Item>
-                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OTHER: {currGPU} </ListGroup.Item>
+                        <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>OTHER: {other} | ${otherCost} </ListGroup.Item>
                     </ListGroup>
                     <Button 
                             variant="primary"

@@ -33,5 +33,9 @@ urlpatterns = [
     path('update_contact_info/', views.update_contact_info),
     path('get_email/', views.get_email),
     path('get_phone_number/', views.get_phone_number),
-    path('get_part_costs/', views.get_parts_cost)
+    path('get_part_costs/', views.get_parts_cost),
+    path('get_other/', views.get_other),
+    path('set_other/', views.set_other),
+    path('get_other_cost/', views.get_other_cost),
+    path('set_other_cost/', views.set_other_cost)
 ]

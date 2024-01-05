@@ -51,6 +51,8 @@ export const PartsTable = (props) => {
     const [currPowerSupply, setCurrPowerSupply] = useState();
     const [operatingSystem, setOperatingSystems] = useState([]);
     const [currOperatingSystem, setCurrOperatingSystem] = useState();
+    const [currOther, setCurrOther] = useState();
+    const [currOtherCost, setCurrOtherCost] = useState();
     const [currCost, setCurrCost] = useState();
     const [currCosts, setCurrCosts] = useState({
         "CPU": 0.00,
@@ -89,6 +91,9 @@ export const PartsTable = (props) => {
         fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
         fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
 
+        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${buildNum}`, setCurrOther);
+        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
+        
         // fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
     }, []);
 
@@ -257,7 +262,7 @@ export const PartsTable = (props) => {
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#other">
-                                < OtherAdditions />
+                                < OtherAdditions buildNum={buildNum}/>
                             </Tab.Pane>
                         </Tab.Content>
                         </div>
@@ -349,24 +354,63 @@ function MakeCard({title, cost, description, current, setter}) {
 }
 
 
-function OtherAdditions() {
+function OtherAdditions(props) {
     const [estimatedCost, setEstimatedCost] = useState(0);
     const [extraParts, setExtraParts] = useState();
     const [showSaved, setShowSaved] = useState(false);
-    
+
+    // get other content from the backend 
+    const fetchData = async (endpoint, setter) => {
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setter(data);
+        //   console.log(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${props.buildNum}`, setExtraParts);
+        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${props.buildNum}`, setEstimatedCost);
+    }, []);
+
+
+
     const costChange = (event) => {
         setEstimatedCost(event.target.value);
         setShowSaved(false);
     };
 
     const extraPartsChange = (event) => {
+        setExtraParts(event.target.value);
         setShowSaved(false);
     }
 
-    function saveBTN() {
+    async function saveBTN() {
         setEstimatedCost(document.getElementById("extraEstimatedCost").value);
         setExtraParts(document.getElementById("extraDescription").value);
-        console.log(extraParts)
+        // console.log(extraParts)
+
+        // make backend call to actually save this data
+        const requestOptionsParts = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"other": extraParts, "buildNum": props.buildNum})
+        };
+        await fetch(`http://127.0.0.1:8000/set_other/?buildNum=${props.buildNum}`, requestOptionsParts)
+
+        const requestOptionsCost = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"otherCost": estimatedCost, "buildNum": props.buildNum})
+        };
+        await fetch(`http://127.0.0.1:8000/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
+        console.log(estimatedCost);
         setShowSaved(true);
     }
     
@@ -396,8 +440,9 @@ function OtherAdditions() {
                     rows={3}
                     style={{background: '#333333', color: 'white', overflow: 'auto'}}
                     id="extraDescription"
+                    value={extraParts}
                     onChange={extraPartsChange}>
-                        {extraParts}
+                        
                     </Form.Control>
                 </Form.Group>
             </Form>

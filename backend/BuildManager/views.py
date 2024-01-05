@@ -331,4 +331,32 @@ def get_phone_number(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     return Response(build.phoneNumber, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_other(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.other, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def set_other(request):
+    build = Build.objects.get(buildNum=request.data["buildNum"])
+    build.other = request.data["other"]
+    build.save()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_other_cost(request):
+    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+    return Response(build.otherCost, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def set_other_cost(request):
+    build = Build.objects.get(buildNum=request.data["buildNum"])
+    newCost = request.data["otherCost"]
+    if (newCost == ""):
+        build.otherCost = 0
+    else:
+        build.otherCost = newCost
+    
+    build.save()
+    print(build.otherCost)
+    return Response(status=status.HTTP_200_OK)
