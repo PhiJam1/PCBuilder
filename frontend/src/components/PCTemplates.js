@@ -6,6 +6,7 @@ import './../pages/PcBuilderPage.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useEffect, useState } from 'react';
+import { Badge, Tab } from "react-bootstrap";
 
 
 export default function TemplateBuilds() {
@@ -71,6 +72,7 @@ export default function TemplateBuilds() {
 
 function makeCard(template, routeChange) {
     let partsDict = template.parts;
+    let costsDict = template.partCosts;
     // get the parts list
 
     return (
@@ -82,18 +84,61 @@ function makeCard(template, routeChange) {
                     <p style={{ margin: '10px 0px' }}>{template.problem_description}</p>
                 </Card.Text>
                 <ListGroup style={{ backgroundColor: "#333333", color: 'red' }}>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CPU:</b> {partsDict["CPU"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CASE:</b> {partsDict["CASE"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>CPU COOLER:</b> {partsDict["CPU_COOLER"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>MOTHERBOARD:</b> {partsDict["MOTHERBOARD"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>MEMORY:</b> {partsDict["MEMORY"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>STORAGE</b> {partsDict["STORAGE"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>GPU:</b> {partsDict["GPU"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>POWER SUPPLY:</b> {partsDict["POWER_SUPPLY"]}</ListGroup.Item>
-                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}><b>OPERATING SYSTEM:</b> {partsDict["OPERATING_SYSTEM"]}</ListGroup.Item>
-                    {/* <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>GPU: {build.parts_list[1]}</ListGroup.Item>
-                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>CPU: {build.parts_list[2]}</ListGroup.Item>
-                <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px'}}>Processor: {build.parts_list[3]}</ListGroup.Item> */}
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>CPU:</b> {partsDict["CPU"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>CASE:</b> {partsDict["CASE"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>CPU COOLER:</b> {partsDict["CPU_COOLER"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>MOTHERBOARD:</b> {partsDict["MOTHERBOARD"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>MEMORY:</b> {partsDict["MEMORY"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>STORAGE:</b> {partsDict["STORAGE"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>GPU:</b> {partsDict["GPU"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>POWER SUPPLY:</b> {partsDict["POWER_SUPPLY"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ backgroundColor: "#333333", color: 'white', padding: '10px' }}>
+                        <h5>
+                            <b>OPERATING SYSTEM:</b> {partsDict["OPERATING_SYSTEM"]} | &nbsp;
+                            <Badge bg="primary">${costsDict["CPU"]}</ Badge>
+                        </h5>
+                    </ListGroup.Item>
+                   
                 </ListGroup>
                 <Button
 

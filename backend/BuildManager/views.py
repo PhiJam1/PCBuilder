@@ -82,6 +82,7 @@ def get_templates(request):
     for i in range(0, len(templates)):
         datas[i]["cost"] = get_cost_val(templates[i])
         datas[i]["parts"] = get_part_names_val(templates[i])
+        datas[i]["partCosts"] = get_part_costs(templates[i])
         
     return Response(datas, status=status.HTTP_200_OK)
 
@@ -115,6 +116,15 @@ def get_part_names_val(build):
              'OPERATING_SYSTEM': build.currOperatingSystem.name
              }
     return parts
+
+def get_part_costs(build):
+    costs = {'CPU': build.currCase.cost, 'CASE': build.currCPU.cost,
+             'CPU_COOLER': build.currCPUCooler.cost, 'MOTHERBOARD': build.currMotherboard.cost,
+             'MEMORY': build.currMemory.cost, 'STORAGE': build.currStorage.cost,
+             'GPU': build.currGPU.cost, 'POWER_SUPPLY': build.currPowerSupply.cost, 
+             'OPERATING_SYSTEM': build.currOperatingSystem.cost
+             }
+    return costs
 
 @api_view(['GET'])
 def get_cost(request):

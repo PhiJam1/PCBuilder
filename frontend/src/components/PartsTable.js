@@ -139,7 +139,8 @@ export const PartsTable = (props) => {
                     <Col sm={3} >
                         <ListGroup >
                             <ListGroup.Item action href="#case">
-                                Case | {currCase ? currCase :  <Badge bg="info">Unselected</Badge>}
+                                Case | {currCase ? currCase + " | $" + cases.find(it => it.name === currCase).cost:  <Badge bg="info">Unselected</Badge>}
+
                             </ListGroup.Item>
                             <ListGroup.Item action href="#cpu">
                                 CPU | {currCPU ? currCPU :  <Badge bg="info">Unselected</Badge>}

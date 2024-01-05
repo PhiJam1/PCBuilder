@@ -24,3 +24,9 @@
 input::placeholder {
     color: #cccccc !important;
 }
+
+.list-ground-items {
+    background-color: #333333;
+    color: white;
+    padding: 10px;
+}
