@@ -18,8 +18,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function FinalOrderStatus() {
     const { buildNum } = useParams();
-    const [showSubmitBTN, setShowSubmitBTN] = useState(true);
-    const [showUpdateContactBTN, setShowUpdateContactBTN] = useState(false);
+    const [showSubmitBTN, setShowSubmitBTN] = useState(false);
 
     const [invalidForm, setInvalidForm] = useState(false);
     const [currCase, setCurrCase] = useState("");
@@ -96,7 +95,6 @@ export default function FinalOrderStatus() {
             };
             await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
             setSavedContactInfo(true);
-            setShowUpdateContactBTN(true);
             setShowSubmitBTN(false);
         } else {
             const requestOptionsStatus = {
@@ -135,6 +133,9 @@ export default function FinalOrderStatus() {
           }
           const data = await response.json();
           setter(data);
+          if (data === "UNFINISHED") {
+            setShowSubmitBTN(true);
+          }
         //   console.log(data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -164,8 +165,9 @@ export default function FinalOrderStatus() {
     useEffect(() => {
         fetchData(`http://127.0.0.1:8000/get_email/?buildNum=${buildNum}`, setCurrEmail);
         fetchData(`http://127.0.0.1:8000/get_phone_number/?buildNum=${buildNum}`, setCurrPhoneNumber);
-        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);        
-    }, [showSubmitBTN, showUpdateContactBTN]);
+        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);  
+        console.log(currStatus)
+    }, [showSubmitBTN]);
     console.log(showSubmitBTN);
     return (
         <Row style={{margin: '0px'}}>
@@ -230,7 +232,7 @@ export default function FinalOrderStatus() {
                             size="lg"
                             style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
                             onClick={() => updateStatus()}>Submit Build</Button>}
-                        {showUpdateContactBTN && <Button 
+                        {!showSubmitBTN && <Button  
                             variant="primary"
                             size="lg"
                             style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
