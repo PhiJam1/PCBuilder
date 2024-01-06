@@ -18,7 +18,9 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function FinalOrderStatus() {
     const { buildNum } = useParams();
-    const [submitted, setSubmitted] = useState(false); // this should be a call to backend based on buildNum
+    const [showSubmitBTN, setShowSubmitBTN] = useState(true);
+    const [showUpdateContactBTN, setShowUpdateContactBTN] = useState(false);
+
     const [invalidForm, setInvalidForm] = useState(false);
     const [currCase, setCurrCase] = useState("");
     const [currCPU, setCurrCPU] = useState("");
@@ -36,7 +38,6 @@ export default function FinalOrderStatus() {
     const [currPhoneNumber, setCurrPhoneNumber] = useState("");
     const [savedContactInfo, setSavedContactInfo] = useState(false);
     const [other, setOther] = useState();
-    const [pulled, setPulled] = useState(false);
     const [otherCost, setOtherCost] = useState();
     const [currCosts, setCurrCosts] = useState({
         "CPU": 0.00,
@@ -86,7 +87,6 @@ export default function FinalOrderStatus() {
                 body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
             };
             await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
-            setSubmitted(true);
             
             // update the contact info
             const requestOptionsContactInfo = {
@@ -96,17 +96,8 @@ export default function FinalOrderStatus() {
             };
             await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
             setSavedContactInfo(true);
-        } else if (currStatus === "PULLED") {
-            const requestOptionsStatus = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
-            };
-            fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus);
-            
-            setSubmitted(true);
-            setCurrStatus("SUBMITTED")
-            // setPulled(!pulled);
+            setShowUpdateContactBTN(true);
+            setShowSubmitBTN(false);
         } else {
             const requestOptionsStatus = {
                 method: 'POST',
@@ -114,11 +105,9 @@ export default function FinalOrderStatus() {
                 body: JSON.stringify({"buildNum": buildNum, "status": "PULLED"})
             };
             await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
-            setSubmitted(false);
+            setShowSubmitBTN(true);
         }
-        setInvalidForm(false);
-        setPulled(!pulled);
-        
+        setInvalidForm(false);        
     }
 
     const phoneChange = (event) => {
@@ -175,9 +164,9 @@ export default function FinalOrderStatus() {
     useEffect(() => {
         fetchData(`http://127.0.0.1:8000/get_email/?buildNum=${buildNum}`, setCurrEmail);
         fetchData(`http://127.0.0.1:8000/get_phone_number/?buildNum=${buildNum}`, setCurrPhoneNumber);
-        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);
-    }, [submitted, savedContactInfo, pulled]);
-
+        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);        
+    }, [showSubmitBTN, showUpdateContactBTN]);
+    console.log(showSubmitBTN);
     return (
         <Row style={{margin: '0px'}}>
             <Col>
@@ -236,12 +225,12 @@ export default function FinalOrderStatus() {
                         {invalidForm ? <Badge pill="true" bg="danger" style={{fontSize: '100%', marginBottom: '10px'}}> Please fill out both fields.</Badge> : <></>} 
                         <h6>We only use your info to set up a quick consulting session.</h6>
                         
-                        <Button 
+                        {showSubmitBTN && <Button 
                             variant="primary"
                             size="lg"
                             style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
-                            onClick={() => updateStatus()}>{!submitted ? "Submit Build" : "Pull Build"}</Button>
-                        {submitted && <Button 
+                            onClick={() => updateStatus()}>Submit Build</Button>}
+                        {showUpdateContactBTN && <Button 
                             variant="primary"
                             size="lg"
                             style={{padding: '10px 20px', fontSize: '2rem', background: '#8011ec', borderColor: '#8011ec', margin: '20px'}}
