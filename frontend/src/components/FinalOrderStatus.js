@@ -15,6 +15,7 @@ import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Congrats from './Congrats';
 
 export default function FinalOrderStatus() {
     const { buildNum } = useParams();
@@ -38,6 +39,7 @@ export default function FinalOrderStatus() {
     const [savedContactInfo, setSavedContactInfo] = useState(false);
     const [other, setOther] = useState();
     const [otherCost, setOtherCost] = useState();
+    const [showCongrats, setShowCongrats] = useState(false);
     const [currCosts, setCurrCosts] = useState({
         "CPU": 0.00,
         "CASE": 0.00,
@@ -105,7 +107,8 @@ export default function FinalOrderStatus() {
             await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
             setShowSubmitBTN(true);
         }
-        setInvalidForm(false);        
+        setInvalidForm(false);  
+        setShowCongrats(true);      
     }
 
     const phoneChange = (event) => {
@@ -171,6 +174,7 @@ export default function FinalOrderStatus() {
     console.log(showSubmitBTN);
     return (
         <Row style={{margin: '0px'}}>
+            {showCongrats && <Congrats />}
             <Col>
                 <div className="build-components">
                     <h1>Current Build Info</h1>
