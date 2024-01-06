@@ -101,11 +101,16 @@ def get_build_info(request):
     return Response(datas, status=status.HTTP_200_OK)
 
 def get_cost_val(build):
-    cost = build.currCase.cost + build.currCPU.cost 
-    cost += build.currCPUCooler.cost + build.currMotherboard.cost 
-    cost += build.currMemory.cost + build.currStorage.cost
-    cost += build.currGPU.cost + build.currPowerSupply.cost
-    cost += build.currOperatingSystem.cost + build.otherCost
+    cost = 0 if build.currCase == None else build.currCase.cost
+    cost += 0 if build.currCPU == None else build.currCPU.cost 
+    cost += 0 if build.currCPUCooler == None else build.currCPUCooler.cost
+    cost += 0 if build.currMotherboard == None else build.currMotherboard.cost 
+    cost += 0 if build.currMemory == None else build.currMemory.cost
+    cost += 0 if build.currStorage == None else build.currStorage.cost
+    cost += 0 if build.currGPU == None else build.currGPU.cost
+    cost += 0 if build.currPowerSupply == None else build.currPowerSupply.cost
+    cost += 0 if build.currOperatingSystem == None else build.currOperatingSystem.cost
+    cost += build.otherCost
     return cost
 
 def get_part_names_val(build):
@@ -118,11 +123,15 @@ def get_part_names_val(build):
     return parts
 
 def get_part_costs(build):
-    costs = {'CPU': build.currCPU.cost, 'CASE': build.currCase.cost,
-             'CPU_COOLER': build.currCPUCooler.cost, 'MOTHERBOARD': build.currMotherboard.cost,
-             'MEMORY': build.currMemory.cost, 'STORAGE': build.currStorage.cost,
-             'GPU': build.currGPU.cost, 'POWER_SUPPLY': build.currPowerSupply.cost, 
-             'OPERATING_SYSTEM': build.currOperatingSystem.cost
+    costs = {'CPU': 0 if build.currCPU == None else build.currCPU.cost,
+             'CASE': 0 if build.currCase == None else build.currCase.cost,
+             'CPU_COOLER': 0 if build.currCPUCooler == None else build.currCPUCooler.cost,
+             'MOTHERBOARD': 0 if build.currMotherboard == None else build.currMotherboard.cost,
+             'MEMORY': 0 if build.currMemory == None else build.currMemory.cost,
+             'STORAGE': 0 if build.currStorage == None else build.currStorage.cost,
+             'GPU': 0 if build.currGPU == None else build.currGPU.cost,
+             'POWER_SUPPLY': 0 if build.currPowerSupply == None else build.currPowerSupply.cost, 
+             'OPERATING_SYSTEM': 0 if build.currOperatingSystem == None else build.currOperatingSystem.cost
              }
     return costs
 
@@ -134,11 +143,7 @@ def get_parts_cost(request):
 @api_view(['GET'])
 def get_cost(request):
     build = Build.objects.get(buildNum=request.GET.get('buildNum'))
-    cost = build.currCase.cost + build.currCPU.cost 
-    cost += build.currCPUCooler.cost + build.currMotherboard.cost 
-    cost += build.currMemory.cost + build.currStorage.cost
-    cost += build.currGPU.cost + build.currPowerSupply.cost
-    cost += build.currOperatingSystem.cost + build.otherCost
+    cost = get_cost_val(build)
     return Response(cost, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -192,6 +197,8 @@ def valid_build_num(request):
 def curr_case(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currCase == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currCase.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -204,6 +211,8 @@ def curr_case(request):
 def curr_cpu(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currCPU == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currCPU.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -216,6 +225,8 @@ def curr_cpu(request):
 def curr_cpu_cooler(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currCPUCooler == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currCPUCooler.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -228,6 +239,8 @@ def curr_cpu_cooler(request):
 def curr_motherboard(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currMotherboard == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currMotherboard.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -240,6 +253,8 @@ def curr_motherboard(request):
 def curr_memory(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currMemory == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currMemory.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -252,6 +267,8 @@ def curr_memory(request):
 def curr_storage(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currStorage == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currStorage.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -264,6 +281,8 @@ def curr_storage(request):
 def curr_gpu(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currGPU == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currGPU.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -276,6 +295,8 @@ def curr_gpu(request):
 def curr_power_supply(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currPowerSupply == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currPowerSupply.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]
@@ -288,6 +309,8 @@ def curr_power_supply(request):
 def curr_operating_system(request):
     build = Build.objects.get(buildNum=request.GET.get("buildNum"))
     if (request.method == 'GET'):
+        if (build.currOperatingSystem == None):
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(build.currOperatingSystem.name, status=status.HTTP_200_OK)
     if (request.method == 'POST'):
         newPart = request.data["newPart"]

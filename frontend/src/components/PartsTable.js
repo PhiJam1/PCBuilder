@@ -13,7 +13,7 @@ import Badge from 'react-bootstrap/Badge';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Axios from 'axios';
+import Axios, { HttpStatusCode } from 'axios';
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
@@ -25,9 +25,12 @@ export const PartsTable = (props) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          const data = await response.json();
-          catalogSetter(data);
-        //   console.log(data);
+          if (response.status === 200 || response.status === 202) {
+            console.log("code good")
+            const data = await response.json();
+            catalogSetter(data);
+          }
+          //   console.log(data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -95,7 +98,7 @@ export const PartsTable = (props) => {
         fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
         
         // fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
-    }, []);
+    }, [currCPU, currCPUCooler, currCase, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
 
     useEffect(() => {
         fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);

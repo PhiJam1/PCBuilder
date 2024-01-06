@@ -244,7 +244,8 @@ export default function FinalOrderStatus() {
                             You'll get a consulting call from one of our experts regarding final pricing
                             and shipping details after submitting. They'll also offer any advice they have on your build to
                             ensure you're happy with your new PC. Feel free to contact us with any questions. Queries will have an
-                            answer within 24 hours. 
+                            answer within 24 hours. Send us an email to cancel your order! Feel free to make any changes to your build
+                            by clicked the Edit button until your consulting session. 
                         </p>
                     </div>
             </Col>
