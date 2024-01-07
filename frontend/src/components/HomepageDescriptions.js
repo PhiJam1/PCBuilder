@@ -28,7 +28,7 @@ export default function HomePageDescriptions() {
                     want and read up on the provided expert opinion. If you make an account with us, you can save your build and return
                     to it later. Once you submit a build, one of our nerds will get back to you in a few (timeframe yu) to confirm. Then,
                     in a few days, your PC will arrive at your door ready to go! If at any point, you're stuck with your build, just submit
-                    a review form and one of our nerds will be in touch for free (yea?) consultation.
+                    a review form and one of our nerds will be in touch for free (yea????) consultation.
                 </p>
             </div>
         </div>
