@@ -16,6 +16,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Congrats from './Congrats';
+import { BACKEND } from '../pages/constants';
 
 export default function FinalOrderStatus() {
     const { buildNum } = useParams();
@@ -66,7 +67,7 @@ export default function FinalOrderStatus() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
         };
-        await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
+        await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
         setSavedContactInfo(true);
     }
     async function updateStatus() {
@@ -87,7 +88,7 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
             };
-            await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
+            await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
             
             // update the contact info
             const requestOptionsContactInfo = {
@@ -95,7 +96,7 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
             };
-            await fetch(`http://127.0.0.1:8000/update_contact_info/`, requestOptionsContactInfo)
+            await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
             setSavedContactInfo(true);
             setShowSubmitBTN(false);
         } else {
@@ -104,7 +105,7 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "PULLED"})
             };
-            await fetch(`http://127.0.0.1:8000/update_status/`, requestOptionsStatus)
+            await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
             setShowSubmitBTN(true);
         }
         setInvalidForm(false);  
@@ -149,26 +150,26 @@ export default function FinalOrderStatus() {
 
     // set initial values
     useEffect(() => {
-        fetchData(`http://127.0.0.1:8000/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
-        fetchData(`http://127.0.0.1:8000/curr_case/?buildNum=${buildNum}`, setCurrCase);
-        fetchData(`http://127.0.0.1:8000/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
-        fetchData(`http://127.0.0.1:8000/curr_motherboard/?buildNum=${buildNum}`, setCurrMotherboard);
-        fetchData(`http://127.0.0.1:8000/curr_memory/?buildNum=${buildNum}`, setCurrMemory);
-        fetchData(`http://127.0.0.1:8000/curr_storage/?buildNum=${buildNum}`, setCurrStorage);
-        fetchData(`http://127.0.0.1:8000/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
-        fetchData(`http://127.0.0.1:8000/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
-        fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
-        fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCost);
-        fetchData(`http://127.0.0.1:8000/get_template_name/?buildNum=${buildNum}`, setCurrTemplateName);
-        fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
-        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${buildNum}`, setOther);
-        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${buildNum}`, setOtherCost);
+        fetchData(`${BACKEND}/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
+        fetchData(`${BACKEND}/curr_case/?buildNum=${buildNum}`, setCurrCase);
+        fetchData(`${BACKEND}/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
+        fetchData(`${BACKEND}/curr_motherboard/?buildNum=${buildNum}`, setCurrMotherboard);
+        fetchData(`${BACKEND}/curr_memory/?buildNum=${buildNum}`, setCurrMemory);
+        fetchData(`${BACKEND}/curr_storage/?buildNum=${buildNum}`, setCurrStorage);
+        fetchData(`${BACKEND}/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
+        fetchData(`${BACKEND}/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
+        fetchData(`${BACKEND}/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
+        fetchData(`${BACKEND}/get_cost/?buildNum=${buildNum}`, setCost);
+        fetchData(`${BACKEND}/get_template_name/?buildNum=${buildNum}`, setCurrTemplateName);
+        fetchData(`${BACKEND}/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
+        fetchData(`${BACKEND}/get_other/?buildNum=${buildNum}`, setOther);
+        fetchData(`${BACKEND}/get_other_cost/?buildNum=${buildNum}`, setOtherCost);
     }, []);
 
     useEffect(() => {
-        fetchData(`http://127.0.0.1:8000/get_email/?buildNum=${buildNum}`, setCurrEmail);
-        fetchData(`http://127.0.0.1:8000/get_phone_number/?buildNum=${buildNum}`, setCurrPhoneNumber);
-        fetchData(`http://127.0.0.1:8000/get_status/?buildNum=${buildNum}`, setCurrStatus);  
+        fetchData(`${BACKEND}/get_email/?buildNum=${buildNum}`, setCurrEmail);
+        fetchData(`${BACKEND}/get_phone_number/?buildNum=${buildNum}`, setCurrPhoneNumber);
+        fetchData(`${BACKEND}/get_status/?buildNum=${buildNum}`, setCurrStatus);  
         console.log(currStatus)
     }, [showSubmitBTN]);
     console.log(showSubmitBTN);

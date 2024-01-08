@@ -14,6 +14,7 @@ import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Axios, { HttpStatusCode } from 'axios';
+import { BACKEND } from '../pages/constants'; 
 
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
@@ -72,36 +73,36 @@ export const PartsTable = (props) => {
     // set initial values
     useEffect(() => {
         // catalog parts
-        fetchData("http://127.0.0.1:8000/all_cpus/", setCpus);
-        fetchData("http://127.0.0.1:8000/all_cases/", setCases);
-        fetchData("http://127.0.0.1:8000/all_cpu_coolers/", setCPUCoolers);
-        fetchData("http://127.0.0.1:8000/all_motherboards/", setMotherboards);
-        fetchData("http://127.0.0.1:8000/all_memories/", setMemories);
-        fetchData("http://127.0.0.1:8000/all_storage/", setStorages);
-        fetchData("http://127.0.0.1:8000/all_gpus/", setGPUs);
-        fetchData("http://127.0.0.1:8000/all_power_supply/", setPowerSupply);
-        fetchData("http://127.0.0.1:8000/all_operating_systems/", setOperatingSystems);
+        fetchData(BACKEND + "/all_cpus/", setCpus);
+        fetchData(BACKEND + "/all_cases/", setCases);
+        fetchData(BACKEND + "/all_cpu_coolers/", setCPUCoolers);
+        fetchData(BACKEND + "/all_motherboards/", setMotherboards);
+        fetchData(BACKEND + "/all_memories/", setMemories);
+        fetchData(BACKEND + "/all_storage/", setStorages);
+        fetchData(BACKEND + "/all_gpus/", setGPUs);
+        fetchData(BACKEND + "/all_power_supply/", setPowerSupply);
+        fetchData(BACKEND + "/all_operating_systems/", setOperatingSystems);
 
         // parts for the current build
-        fetchData(`http://127.0.0.1:8000/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
-        fetchData(`http://127.0.0.1:8000/curr_case/?buildNum=${buildNum}`, setCurrCase);
-        fetchData(`http://127.0.0.1:8000/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
-        fetchData(`http://127.0.0.1:8000/curr_motherboard/?buildNum=${buildNum}`, setCurrMotherboard);
-        fetchData(`http://127.0.0.1:8000/curr_memory/?buildNum=${buildNum}`, setCurrMemory);
-        fetchData(`http://127.0.0.1:8000/curr_storage/?buildNum=${buildNum}`, setCurrStorage);
-        fetchData(`http://127.0.0.1:8000/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
-        fetchData(`http://127.0.0.1:8000/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
-        fetchData(`http://127.0.0.1:8000/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
-        fetchData(`http://127.0.0.1:8000/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
+        fetchData(`${BACKEND}/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
+        fetchData(`${BACKEND}/curr_case/?buildNum=${buildNum}`, setCurrCase);
+        fetchData(`${BACKEND}/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
+        fetchData(`${BACKEND}/curr_motherboard/?buildNum=${buildNum}`, setCurrMotherboard);
+        fetchData(`${BACKEND}/curr_memory/?buildNum=${buildNum}`, setCurrMemory);
+        fetchData(`${BACKEND}/curr_storage/?buildNum=${buildNum}`, setCurrStorage);
+        fetchData(`${BACKEND}/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
+        fetchData(`${BACKEND}/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
+        fetchData(`${BACKEND}/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
+        fetchData(`${BACKEND}/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
 
-        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${buildNum}`, setCurrOther);
-        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
+        fetchData(`${BACKEND}/get_other/?buildNum=${buildNum}`, setCurrOther);
+        fetchData(`${BACKEND}/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
         
         // fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
     }, [currCPU, currCPUCooler, currCase, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
 
     useEffect(() => {
-        fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
+        fetchData(`${BACKEND}/get_cost/?buildNum=${buildNum}`, setCurrCost);
     }, [currCase, currCPU, currCPUCooler, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
 
     function setCurrBackend(endpoint, title) {
@@ -110,7 +111,7 @@ export const PartsTable = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"newPart": title})
         };
-        fetch(`http://127.0.0.1:8000/${endpoint}/?buildNum=${buildNum}`, requestOptions)
+        fetch(`${BACKEND}/${endpoint}/?buildNum=${buildNum}`, requestOptions)
     }
 
     function updateCurrCase(title) {
@@ -378,8 +379,8 @@ function OtherAdditions(props) {
     };
 
     useEffect(() => {
-        fetchData(`http://127.0.0.1:8000/get_other/?buildNum=${props.buildNum}`, setExtraParts);
-        fetchData(`http://127.0.0.1:8000/get_other_cost/?buildNum=${props.buildNum}`, setEstimatedCost);
+        fetchData(`${BACKEND}/get_other/?buildNum=${props.buildNum}`, setExtraParts);
+        fetchData(`${BACKEND}/get_other_cost/?buildNum=${props.buildNum}`, setEstimatedCost);
     }, []);
 
 
@@ -405,14 +406,14 @@ function OtherAdditions(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"other": extraParts, "buildNum": props.buildNum})
         };
-        await fetch(`http://127.0.0.1:8000/set_other/?buildNum=${props.buildNum}`, requestOptionsParts)
+        await fetch(`${BACKEND}/set_other/?buildNum=${props.buildNum}`, requestOptionsParts)
 
         const requestOptionsCost = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"otherCost": estimatedCost, "buildNum": props.buildNum})
         };
-        await fetch(`http://127.0.0.1:8000/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
+        await fetch(`${BACKEND}/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
         console.log(estimatedCost);
         setShowSaved(true);
     }

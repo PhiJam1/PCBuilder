@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # the backend is allowed to communicate with
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://bitbuilder.netlify.app"
 ]
 
 # Application definition

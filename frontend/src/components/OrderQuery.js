@@ -5,6 +5,7 @@ import { Form } from 'react-bootstrap';
 
 import { Badge } from "react-bootstrap";
 import { useState } from "react";
+import { BACKEND } from "../pages/constants";
 
 export default function OrderQuery() {
     const [invalidBuild, setInvalidBuild] = useState(false);
@@ -20,7 +21,7 @@ export default function OrderQuery() {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/valid_build_num/?buildNum=${buildNum}`, {
+            const response = await fetch(`${BACKEND}/valid_build_num/?buildNum=${buildNum}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

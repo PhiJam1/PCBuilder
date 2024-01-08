@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useEffect, useState } from 'react';
 import { Badge, Tab } from "react-bootstrap";
-
+import { BACKEND } from '../pages/constants'; 
 
 export default function TemplateBuilds() {
     const [templates, setTemplates] = useState([]);
@@ -27,7 +27,7 @@ export default function TemplateBuilds() {
 
 
     useEffect(() => {
-        fetchData("http://127.0.0.1:8000/all_templates/", setTemplates);
+        fetchData(BACKEND + "/all_templates/", setTemplates);
     }, []);
 
 
@@ -36,7 +36,7 @@ export default function TemplateBuilds() {
         console.log(buildNum)
         // make a new build registered with the backend
         try {
-            const response = await fetch('http://127.0.0.1:8000/register_build/', {
+            const response = await fetch(BACKEND + '/register_build/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

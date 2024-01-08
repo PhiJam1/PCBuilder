@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Badge, FormLabel } from "react-bootstrap";
 import { useState } from "react";
-
+import { BACKEND } from "../pages/constants";
 
 export default function ContinueOptions() {
 
@@ -19,7 +19,7 @@ export default function ContinueOptions() {
     if (buildNum === "") { // start from scratch
       // make a new build registered with the backend
         try {
-            const response = await fetch('http://127.0.0.1:8000/register_build/', {
+            const response = await fetch(BACKEND + '/register_build/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export default function ContinueOptions() {
     } else {
       // check to see if this is a valid build 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/valid_build_num/?buildNum=${buildNum}`, {
+        const response = await fetch(`${BACKEND}/valid_build_num/?buildNum=${buildNum}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
