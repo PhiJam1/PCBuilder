@@ -12,10 +12,8 @@ distro==1.7.0
 Django==3.2.12
 django-cors-headers==4.2.0
 djangorestframework==3.14.0
-dominate==2.8.0
 duplicity==0.8.21
 fonttools==4.42.1
-future==0.18.2
 gunicorn==21.2.0
 gyp==0.1
 httplib2==0.20.2
