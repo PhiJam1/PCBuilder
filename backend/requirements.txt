@@ -44,7 +44,6 @@ plumbum==1.8.2
 psutil==5.9.5
 psycopg2==2.9.2
 ptyprocess==0.7.0
-pycairo==1.20.1
 pycups==2.0.1
 pyelftools==0.30
 Pygments==2.11.2
