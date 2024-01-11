@@ -7,12 +7,11 @@ export const ContactUsPage = () => {
         <div className="left">
             <h1> Contact Information </h1>
             <hr className="line"></hr>
-            <p>Address 7042 cherry terr.</p>
-            <p>Phone number: 224 - 444 -4444</p>
-            <p>SSN: ***-**-****</p>
+            <p>Phone Number: +1 (***) - *** ****</p>
+            <p>Email: email@email.com</p>
             <h1> About Us</h1>
             <hr className="line"></hr>
-            <p>Yo, fill this in!!</p>
+            <p>About us section</p>
         </div>
         
     </div>
