@@ -31,6 +31,7 @@ export default function OrderQuery() {
             });
       
             if (!response.ok) {
+              navigate("/error/");
               throw new Error('Network response was not ok');
             }
       

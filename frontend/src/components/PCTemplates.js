@@ -8,14 +8,16 @@ import Col from 'react-bootstrap/Col';
 import { useEffect, useState } from 'react';
 import { Badge, Tab } from "react-bootstrap";
 import { BACKEND } from '../pages/constants'; 
+import { Navigate } from 'react-router-dom';
 
 export default function TemplateBuilds() {
     const [templates, setTemplates] = useState([]);
-    
+    let navigate = useNavigate();
     const fetchData = async (endpoint, setter) => {
         try {
             const response = await fetch(endpoint);
             if (!response.ok) {
+                navigate("/error/");
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
@@ -31,7 +33,6 @@ export default function TemplateBuilds() {
     }, []);
 
 
-    let navigate = useNavigate();
     const routeChange = async (buildNum) => {
         console.log(buildNum)
         // make a new build registered with the backend
@@ -46,6 +47,7 @@ export default function TemplateBuilds() {
             });
       
             if (!response.ok) {
+                navigate("/error/");
               throw new Error('Network response was not ok');
             }
       

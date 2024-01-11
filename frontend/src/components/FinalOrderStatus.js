@@ -52,6 +52,8 @@ export default function FinalOrderStatus() {
         "POWER_SUPPLY": 0.00,
         "OPERATING_SYSTEM": 0.00
     });
+    // ERROR HANDLING
+    let navError = useNavigate();
 
     async function update_contact_info() {
         let email = document.getElementById("email-final").value;
@@ -67,11 +69,13 @@ export default function FinalOrderStatus() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
         };
-        await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
+        const res = await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
+        if (!res.ok) {
+            navError("/error/")
+        }
         setSavedContactInfo(true);
     }
     async function updateStatus() {
-        console.log("submit clicked")
         
         let email = document.getElementById("email-final").value;
         let phone = document.getElementById("phone-final").value;
@@ -88,15 +92,20 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "SUBMITTED"})
             };
-            await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
-            
+            const res = await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
+            if (!res.ok) {
+                navError("/error/")
+            }
             // update the contact info
             const requestOptionsContactInfo = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "email": email, "phone_number": phone})
             };
-            await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
+            const res2 = await fetch(`${BACKEND}/update_contact_info/`, requestOptionsContactInfo)
+            if (!res2.ok) {
+                navError("/error/")
+            }
             setSavedContactInfo(true);
             setShowSubmitBTN(false);
         } else {
@@ -105,7 +114,10 @@ export default function FinalOrderStatus() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({"buildNum": buildNum, "status": "PULLED"})
             };
-            await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
+            const res = await fetch(`${BACKEND}/update_status/`, requestOptionsStatus)
+            if (!res.ok) {
+                navError("/error/")
+            }
             setShowSubmitBTN(true);
         }
         setInvalidForm(false);  
@@ -133,7 +145,8 @@ export default function FinalOrderStatus() {
         try {
           const response = await fetch(endpoint);
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            // throw new Error('Network response was not ok');
+            navError("/error/")
           }
           const data = await response.json();
           setter(data);

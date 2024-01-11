@@ -10,15 +10,16 @@ import Badge from 'react-bootstrap/Badge';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { BACKEND } from '../pages/constants'; 
-
+import { Navigate, useNavigate } from 'react-router-dom';
 export const PartsTable = (props) => {
     let buildNum = props.buildNum
-    
+    let navigate = useNavigate();
     // function that will get catalog information from the backend
     const fetchData = async (endpoint, catalogSetter) => {
         try {
           const response = await fetch(endpoint);
           if (!response.ok) {
+            navigate("/error/");
             throw new Error('Network response was not ok');
           }
           
@@ -355,12 +356,13 @@ function OtherAdditions(props) {
     const [estimatedCost, setEstimatedCost] = useState(0);
     const [extraParts, setExtraParts] = useState();
     const [showSaved, setShowSaved] = useState(false);
-
+    let navigate = useNavigate();
     // get other content from the backend 
     const fetchData = async (endpoint, setter) => {
         try {
           const response = await fetch(endpoint);
           if (!response.ok) {
+            navigate("/error/");
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
@@ -399,15 +401,19 @@ function OtherAdditions(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"other": extraParts, "buildNum": props.buildNum})
         };
-        await fetch(`${BACKEND}/set_other/?buildNum=${props.buildNum}`, requestOptionsParts)
-
+        const res = await fetch(`${BACKEND}/set_other/?buildNum=${props.buildNum}`, requestOptionsParts)
+        if (!res.ok) {
+            navigate("/error/");
+        }
         const requestOptionsCost = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"otherCost": estimatedCost, "buildNum": props.buildNum})
         };
-        await fetch(`${BACKEND}/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
-        console.log(estimatedCost);
+        const res2 = await fetch(`${BACKEND}/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
+        if (!res2.ok) {
+            navigate("/error/");
+        }
         setShowSaved(true);
         props.otherCostSetter(estimatedCost);
     }

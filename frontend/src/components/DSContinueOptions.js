@@ -15,6 +15,7 @@ export default function ContinueOptions() {
 
 
   let navigate = useNavigate();
+
   const routeChange = async (buildNum) => {
     if (buildNum === "") { // start from scratch
       // make a new build registered with the backend
@@ -29,6 +30,7 @@ export default function ContinueOptions() {
             });
       
             if (!response.ok) {
+              navigate("/error/");
               throw new Error('Network response was not ok');
             }
       
@@ -51,6 +53,7 @@ export default function ContinueOptions() {
         });
   
         if (!response.ok) {
+          navigate("/error/");
           throw new Error('Network response was not ok');
         }
   
