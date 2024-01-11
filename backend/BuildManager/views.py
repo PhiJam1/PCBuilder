@@ -88,17 +88,18 @@ def get_templates(request):
 
 @api_view(['GET'])
 def get_build_info(request):
-    print("\n\nhere\n\n")
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    
-    serializer = BuildSerializer(build, many=False)
-    
-    datas = serializer.data
-    
-    datas["cost"] = get_cost_val(build)
-    datas["parts"] = get_part_names_val(build)
-    print("\n\nhere 2\n\n")
-    return Response(datas, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        
+        serializer = BuildSerializer(build, many=False)
+        
+        datas = serializer.data
+        
+        datas["cost"] = get_cost_val(build)
+        datas["parts"] = get_part_names_val(build)
+        return Response(datas, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 def get_cost_val(build):
     cost = 0 if build.currCase == None else build.currCase.cost
@@ -137,25 +138,35 @@ def get_part_costs(build):
 
 @api_view(['GET'])
 def get_parts_cost(request):
-    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
-    costs = get_part_costs(build)
-    return Response(costs, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get('buildNum'))
+        costs = get_part_costs(build)
+        return Response(costs, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
+
 @api_view(['GET'])
 def get_cost(request):
-    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
-    cost = get_cost_val(build)
-    return Response(cost, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get('buildNum'))
+        cost = get_cost_val(build)
+        return Response(cost, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_part_names(request):
-    build = Build.objects.get(buildNum=request.GET.get('buildNum'))
-    parts = {'CPU': build.currCase.name, 'CASE': build.currCPU.name,
-             'CPU_COOLER': build.currCPUCooler.name, 'MOTHERBOARD': build.currMotherboard.name,
-             'MEMORY': build.currMemory.name, 'STORAGE': build.currStorage.name,
-             'GPU': build.currGPU.name, 'POWER_SUPPLY': build.currPowerSupply.name, 
-             'OPERATING_SYSTEM': build.currOperatingSystem.name
-             }
-    return Response(parts, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get('buildNum'))
+        parts = {'CPU': build.currCase.name, 'CASE': build.currCPU.name,
+                'CPU_COOLER': build.currCPUCooler.name, 'MOTHERBOARD': build.currMotherboard.name,
+                'MEMORY': build.currMemory.name, 'STORAGE': build.currStorage.name,
+                'GPU': build.currGPU.name, 'POWER_SUPPLY': build.currPowerSupply.name, 
+                'OPERATING_SYSTEM': build.currOperatingSystem.name
+                }
+        return Response(parts, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['POST'])
 def register_build(request):
@@ -195,191 +206,248 @@ def valid_build_num(request):
 
 @api_view(['GET', 'POST'])
 def curr_case(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currCase == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currCase.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currCase = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currCase == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currCase.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currCase = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_cpu(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currCPU == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currCPU.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currCPU = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currCPU == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currCPU.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currCPU = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_cpu_cooler(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currCPUCooler == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currCPUCooler.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currCPUCooler = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currCPUCooler == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currCPUCooler.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currCPUCooler = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_motherboard(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currMotherboard == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currMotherboard.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currMotherboard = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currMotherboard == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currMotherboard.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currMotherboard = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_memory(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currMemory == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currMemory.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currMemory = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currMemory == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currMemory.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currMemory = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_storage(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currStorage == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currStorage.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currStorage = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currStorage == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currStorage.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currStorage = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_gpu(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currGPU == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currGPU.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currGPU = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currGPU == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currGPU.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currGPU = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_power_supply(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currPowerSupply == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currPowerSupply.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currPowerSupply = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currPowerSupply == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currPowerSupply.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currPowerSupply = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET', 'POST'])
 def curr_operating_system(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    if (request.method == 'GET'):
-        if (build.currOperatingSystem == None):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(build.currOperatingSystem.name, status=status.HTTP_200_OK)
-    if (request.method == 'POST'):
-        newPart = request.data["newPart"]
-        build.currOperatingSystem = Part.objects.get(name=newPart)
-        build.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
-    # return Response(status=status.HTTP_100_CONTINUE)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        if (request.method == 'GET'):
+            if (build.currOperatingSystem == None):
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(build.currOperatingSystem.name, status=status.HTTP_200_OK)
+        if (request.method == 'POST'):
+            newPart = request.data["newPart"]
+            build.currOperatingSystem = Part.objects.get(name=newPart)
+            build.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        # return Response(status=status.HTTP_100_CONTINUE)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_template_name(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.template, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.template, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_status(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.status, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.status, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['POST'])
 def update_status(request):
-    build = Build.objects.get(buildNum=request.data["buildNum"])
-    build.status = request.data["status"]
-    build.save()
-    return Response(status=status.HTTP_202_ACCEPTED)
+    try:
+        build = Build.objects.get(buildNum=request.data["buildNum"])
+        build.status = request.data["status"]
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['POST'])
 def update_contact_info(request):
-    build = Build.objects.get(buildNum=request.data["buildNum"])
-    build.email = request.data["email"]
-    build.phoneNumber = request.data["phone_number"]
-    build.save()
-    return Response(status=status.HTTP_202_ACCEPTED)
+    try:
+        build = Build.objects.get(buildNum=request.data["buildNum"])
+        build.email = request.data["email"]
+        build.phoneNumber = request.data["phone_number"]
+        build.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_email(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.email, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.email, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_phone_number(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.phoneNumber, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.phoneNumber, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_other(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.other, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.other, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['POST'])
 def set_other(request):
-    build = Build.objects.get(buildNum=request.data["buildNum"])
-    build.other = request.data["other"]
-    build.save()
-    return Response(status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.data["buildNum"])
+        build.other = request.data["other"]
+        build.save()
+        return Response(status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['GET'])
 def get_other_cost(request):
-    build = Build.objects.get(buildNum=request.GET.get("buildNum"))
-    return Response(build.otherCost, status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.GET.get("buildNum"))
+        return Response(build.otherCost, status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);
 
 @api_view(['POST'])
 def set_other_cost(request):
-    build = Build.objects.get(buildNum=request.data["buildNum"])
-    newCost = request.data["otherCost"]
-    if (newCost == ""):
-        build.otherCost = 0
-    else:
-        build.otherCost = newCost
-    
-    build.save()
-    print(build.otherCost)
-    return Response(status=status.HTTP_200_OK)
+    try:
+        build = Build.objects.get(buildNum=request.data["buildNum"])
+        newCost = request.data["otherCost"]
+        if (newCost == ""):
+            build.otherCost = 0
+        else:
+            build.otherCost = newCost
+        
+        build.save()
+        print(build.otherCost)
+        return Response(status=status.HTTP_200_OK)
+    except Build.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND);

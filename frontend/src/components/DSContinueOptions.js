@@ -89,7 +89,7 @@ export default function ContinueOptions() {
                         Start from Scratch
                     </Button>
                 </Col>
-                <Col>
+                <Col style={{marginLeft: '20px'}}>
                 Or, Continue with a previous build
 
                   <Form.Control type = "number" id="buildNumCO" style={{marginTop: '20px', backgroundColor: "#333333", color: 'white'}} placeholder="Enter your build number" />

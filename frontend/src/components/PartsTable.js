@@ -1,19 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
 import './../pages/BuildPage.css';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
-import ContactUSIm from './../Images/ContactUSIm.jpg';
 import Badge from 'react-bootstrap/Badge';
-import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Axios, { HttpStatusCode } from 'axios';
 import { BACKEND } from '../pages/constants'; 
 
 export const PartsTable = (props) => {
@@ -26,8 +21,8 @@ export const PartsTable = (props) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          
           if (response.status === 200 || response.status === 202) {
-            console.log("code good")
             const data = await response.json();
             catalogSetter(data);
           }
@@ -82,8 +77,9 @@ export const PartsTable = (props) => {
         fetchData(BACKEND + "/all_gpus/", setGPUs);
         fetchData(BACKEND + "/all_power_supply/", setPowerSupply);
         fetchData(BACKEND + "/all_operating_systems/", setOperatingSystems);
+    }, []);
 
-        // parts for the current build
+    useEffect(() => {    
         fetchData(`${BACKEND}/curr_cpu/?buildNum=${buildNum}`, setCurrCPU);
         fetchData(`${BACKEND}/curr_case/?buildNum=${buildNum}`, setCurrCase);
         fetchData(`${BACKEND}/curr_cpu_cooler/?buildNum=${buildNum}`, setCurrCPUCooler);
@@ -93,25 +89,22 @@ export const PartsTable = (props) => {
         fetchData(`${BACKEND}/curr_gpu/?buildNum=${buildNum}`, setCurrGPU);
         fetchData(`${BACKEND}/curr_power_supply/?buildNum=${buildNum}`, setCurrPowerSupply);
         fetchData(`${BACKEND}/curr_operating_system/?buildNum=${buildNum}`, setCurrOperatingSystem);
-        fetchData(`${BACKEND}/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
-
-        fetchData(`${BACKEND}/get_other/?buildNum=${buildNum}`, setCurrOther);
-        fetchData(`${BACKEND}/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
-        
-        // fetchData(`http://127.0.0.1:8000/get_cost/?buildNum=${buildNum}`, setCurrCost);
-    }, [currCPU, currCPUCooler, currCase, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
+    }, []);
 
     useEffect(() => {
         fetchData(`${BACKEND}/get_cost/?buildNum=${buildNum}`, setCurrCost);
-    }, [currCase, currCPU, currCPUCooler, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem]);
+        fetchData(`${BACKEND}/get_part_costs/?buildNum=${buildNum}`, setCurrCosts);
+        fetchData(`${BACKEND}/get_other/?buildNum=${buildNum}`, setCurrOther);
+        fetchData(`${BACKEND}/get_other_cost/?buildNum=${buildNum}`, setCurrOtherCost);
+    }, [currCase, currCPU, currCPUCooler, currMotherboard, currMemory, currStorage, currGPU, currPowerSupply, currOperatingSystem, currOtherCost]);
 
-    function setCurrBackend(endpoint, title) {
+    async function setCurrBackend(endpoint, title) {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({"newPart": title})
         };
-        fetch(`${BACKEND}/${endpoint}/?buildNum=${buildNum}`, requestOptions)
+        await fetch(`${BACKEND}/${endpoint}/?buildNum=${buildNum}`, requestOptions)
     }
 
     function updateCurrCase(title) {
@@ -266,7 +259,7 @@ export const PartsTable = (props) => {
                                 </div>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#other">
-                                < OtherAdditions buildNum={buildNum}/>
+                                < OtherAdditions buildNum={buildNum} otherCostSetter={setCurrOtherCost}/>
                             </Tab.Pane>
                         </Tab.Content>
                         </div>
@@ -416,6 +409,7 @@ function OtherAdditions(props) {
         await fetch(`${BACKEND}/set_other_cost/?buildNum=${props.buildNum}`, requestOptionsCost)
         console.log(estimatedCost);
         setShowSaved(true);
+        props.otherCostSetter(estimatedCost);
     }
     
     return (

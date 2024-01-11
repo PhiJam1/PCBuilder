@@ -15,20 +15,20 @@ export default function HomePageDescriptions() {
             <div className='top-btn-block'> 
                 <h1> Well not anymore. </h1>
                 <p>
-                    Here at shafaath, we've already done the sourcing, and research, and know all the best tradeoffs for your 
+                    Here at BitBuilder, we've already done the sourcing, and research, and know all the best tradeoffs for your 
                     specific needs. <b>We remove the guess work from PC building for your peace of mind.</b> And by peace of mind, we 
                     mean not having to worry about buying and assembling all the parts only to find your new PC not turning on. We
-                    deliver the highest quality and guarantee any defective service will be fully refunded and fixed (right yu?). 
+                    deliver the highest quality and guarantee any defective service will be fully refunded and fixed. 
                 </p>
             </div>
             <div className='top-btn-block'>
                 <h1> How Does This Work </h1>
                 <p>
-                    First, you can design your dream PC in our design studio (make this a button). At each stage, select the part you
+                    First, you can design your dream PC in our design studio. At each stage, select the part you
                     want and read up on the provided expert opinion. If you make an account with us, you can save your build and return
-                    to it later. Once you submit a build, one of our nerds will get back to you in a few (timeframe yu) to confirm. Then,
+                    to it later. Once you submit a build, one of our nerds will get back to you in a few days to confirm. Then,
                     in a few days, your PC will arrive at your door ready to go! If at any point, you're stuck with your build, just submit
-                    a review form and one of our nerds will be in touch for free (yea????) consultation.
+                    a review form and one of our nerds will be in touch for free consultation.
                 </p>
             </div>
         </div>

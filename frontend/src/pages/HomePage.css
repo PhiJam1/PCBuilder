@@ -28,7 +28,8 @@
 
 .homepage-full {
     background-color: black;
-    height: 100vh;
+    overflow-x: auto;
+    /* height: 100vh; */
 }
 
 .homepage-background1 {
@@ -40,7 +41,7 @@
     /* Center the background image */
     background-repeat: no-repeat;
     /* Do not repeat the background image */
-    padding: 20px;
+    padding: 0px;
 }
 
 .homepage-top {
@@ -53,23 +54,36 @@
     width: 50%;
     float: left;
     color: white;
-    display: grid;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    left: 20px;
+    /* left: 20px; */
     display: flex;
     flex-wrap: wrap;
-    /* Optional: Add padding for better spacing */
+    /* margin-right: 20px; */
+    /* overflow-x: idde; */
 }
 @media screen and (max-width: 800px) {
     .top-half {
         width: 100%;
+        
     }
     
 }
 
+
+.bottom-half {
+    width: 50%;
+    float: right;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+}
 @media screen and (max-width: 800px) {
     .bottom-half {
         width: 100%;
@@ -88,19 +102,7 @@
         width: 100%;
     }
 }
-.bottom-half {
-    width: 50%;
-    float: right;
-    color: white;
-    display: grid;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-}
+
 .homepage-bottom-background {
     background-color: black;
     color: white;
