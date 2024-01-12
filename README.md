@@ -10,7 +10,8 @@ From there, they can select a template. Template are prebuilt models for people 
 If a user wants to check on a order status, or return to an unsubmitted build, they can do so by entering their build number to the order status page. 
 
 ## Technical Architecture
-here's an image 
+![image](![image](https://github.com/PhiJam1/PCBuilder/assets/79670114/4d918116-f499-4c14-9d13-b3bbccfdafb7))
+
 
 Tech Stack
 - React (HTML/JavaScipt/CSS)  - Frontend
