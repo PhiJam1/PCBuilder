@@ -12,7 +12,7 @@ If a user wants to check on a order status, or return to an unsubmitted build, t
 ## Technical Architecture
 ![image](![image](https://github.com/PhiJam1/PCBuilder/assets/79670114/4d918116-f499-4c14-9d13-b3bbccfdafb7))
 
-
+![image](https://github.com/PhiJam1/PCBuilder/assets/79670114/4d918116-f499-4c14-9d13-b3bbccfdafb7)
 Tech Stack
 - React (HTML/JavaScipt/CSS)  - Frontend
 - Bootstrap (CSS) - Styling
